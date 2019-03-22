@@ -14,14 +14,24 @@ enum chess_type {
 export(bool) var white = true setget setWhite;
 export(chess_type) var type = chess_type.pawn setget setChessType;
 
+var controller: ChessBoardController;
+
 var current_node: Node
 
+func _draw():
+	if controller:
+		controller.test();
+		draw_line(Vector2(), Vector2(0, 64), Color(1, 0, 0), 2, true)
+		draw_circle(Vector2(0, 64), 8, Color(1, 0, 0));
+
 func _ready():
+	controller = get_node("../../..")
 	# set current_node
 	setChessType(type);
 	pass
 
 func setChessType(t):
+	update()
 	match t:
 		chess_type.pawn:
 			showType("pawn");
