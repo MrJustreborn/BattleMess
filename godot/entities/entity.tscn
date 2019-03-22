@@ -1,7 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://entities/entity.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://assetes/pawnW2.png" type="Texture" id=2]
+[ext_resource path="res://assetes/kingW2.png" type="Texture" id=3]
+[ext_resource path="res://assetes/queenW2.png" type="Texture" id=4]
+[ext_resource path="res://assetes/bishopW2.png" type="Texture" id=5]
+[ext_resource path="res://assetes/knightW2.png" type="Texture" id=6]
+[ext_resource path="res://assetes/rookW2.png" type="Texture" id=7]
+[ext_resource path="res://assetes/pawnB2.png" type="Texture" id=8]
+[ext_resource path="res://assetes/kingB2.png" type="Texture" id=9]
+[ext_resource path="res://assetes/queenB2.png" type="Texture" id=10]
+[ext_resource path="res://assetes/bishopB2.png" type="Texture" id=11]
+[ext_resource path="res://assetes/knightB2.png" type="Texture" id=12]
+[ext_resource path="res://assetes/rookB2.png" type="Texture" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30, 30 )
@@ -16,15 +27,64 @@ shape = SubResource( 1 )
 
 [node name="white" type="Node2D" parent="."]
 
-[node name="Sprite" type="Sprite" parent="white"]
+[node name="pawn" type="Sprite" parent="white"]
 scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 2 )
+
+[node name="king" type="Sprite" parent="white"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 3 )
+
+[node name="queen" type="Sprite" parent="white"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 4 )
+
+[node name="bishop" type="Sprite" parent="white"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 5 )
+
+[node name="knight" type="Sprite" parent="white"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 6 )
+
+[node name="rock" type="Sprite" parent="white"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 7 )
 
 [node name="black" type="Node2D" parent="."]
 visible = false
 
-[node name="Sprite" type="Sprite" parent="black"]
-modulate = Color( 0.211765, 0.211765, 0.211765, 1 )
+[node name="pawn" type="Sprite" parent="black"]
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 2 )
+texture = ExtResource( 8 )
+
+[node name="king" type="Sprite" parent="black"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 9 )
+
+[node name="queen" type="Sprite" parent="black"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 10 )
+
+[node name="bishop" type="Sprite" parent="black"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 11 )
+
+[node name="knight" type="Sprite" parent="black"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 12 )
+
+[node name="rock" type="Sprite" parent="black"]
+visible = false
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 13 )
 
