@@ -52,10 +52,13 @@ func predict_next_move():
 		$next/Circle/CPUParticles2D.color = col_merge;
 	elif move.type == 2: #OPPONENT
 		$next/Circle/CPUParticles2D.color = col_kill;
+	elif move.type == 3: #WALL
+		$next.visible = false;
 	
 	$next.update();
 	next_move = move;
-	controller.add_predict_move(move.pos, self);
+	if move.type != 3: #WALL
+		controller.add_predict_move(move.pos, self);
 
 func cancel_next_move():
 	next_move = null;
@@ -70,21 +73,38 @@ func perform_next_move():
 		if next_move.type == 0: #FREE
 			setCell(next_move.pos);
 		elif next_move.type == 1: #FRIEND
-			merge_with.delete();
-			setChessType(chess_type.bishop);
-			setCell(next_move.pos);
+			merge_with.setNextChessType();
+			queue_free();
+			#merge_with.setCell(next_move.pos);
 		elif next_move.type == 2: #OPPONENT
-			pass
-	
-	controller.add_node(cell, self);
+			var toKill = controller.get_cell_item(next_move.pos);
+			toKill.delete();
+			setCell(next_move.pos);
+	if !is_queued_for_deletion():
+		controller.add_node(cell, self);
 	cancel_next_move();
 
 func delete():
 	controller.remove_node(cell);
 	queue_free();
 
+func setNextChessType():
+	match type:
+		chess_type.pawn:
+			setChessType(chess_type.bishop);
+		chess_type.bishop:
+			setChessType(chess_type.knight);
+		chess_type.knight:
+			setChessType(chess_type.rock);
+		chess_type.rock:
+			setChessType(chess_type.king);
+		chess_type.king:
+			setChessType(chess_type.queen);
+		chess_type.queen:
+			return;
+
 func want_to_merge_with(with: Node) -> bool:
-	if merge_with != null:
+	if merge_with != null || type == chess_type.queen:
 		return false;
 	var want: bool = randf() > .5;
 	if want:

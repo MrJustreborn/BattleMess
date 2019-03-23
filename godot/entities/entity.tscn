@@ -131,7 +131,7 @@ z_index = -1
 script = ExtResource( 20 )
 
 [node name="Circle" type="Node2D" parent="next"]
-rotation = 1.15916
+rotation = 2.43833
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="next/Circle"]
 position = Vector2( 25, 0 )
