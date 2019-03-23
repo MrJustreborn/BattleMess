@@ -13,6 +13,7 @@ enum chess_type {
 
 export(bool) var white = true setget setWhite;
 export(chess_type) var type = chess_type.pawn setget setChessType;
+export(Vector2) var cell = Vector2(0, 0) setget setCell;
 
 var controller: ChessBoardController;
 
@@ -29,6 +30,14 @@ func _ready():
 	# set current_node
 	setChessType(type);
 	pass
+
+func setCell(newPos: Vector2):
+	if newPos.x < 0 || newPos.y < 0 || newPos.x > 7 || newPos.y > 7:
+		newPos = Vector2(0, 0);
+	cell = newPos;
+	position.x = 32 + 64 * cell.x
+	position.y = 32 + 64 * cell.y
+	
 
 func setChessType(t):
 	update()

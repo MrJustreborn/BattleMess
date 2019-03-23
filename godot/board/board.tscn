@@ -17,52 +17,68 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 1, 0, 2, 0, 0, 3, 1, 0, 4, 0, 0, 5, 1, 0, 
 [node name="white" type="Node" parent="entities"]
 
 [node name="entity" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 32, 480 )
+position = Vector2( 32, 417 )
+cell = Vector2( 0, 6 )
 
 [node name="entity2" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 96, 480 )
+position = Vector2( 96, 416 )
+cell = Vector2( 1, 6 )
 
 [node name="entity3" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 160, 480 )
+position = Vector2( 160, 416 )
+cell = Vector2( 2, 6 )
 
 [node name="entity4" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 224, 480 )
+position = Vector2( 224, 416 )
+cell = Vector2( 3, 6 )
 
 [node name="entity5" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 288, 480 )
+position = Vector2( 288, 416 )
+cell = Vector2( 4, 6 )
 
 [node name="entity6" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 352, 480 )
+position = Vector2( 352, 416 )
+cell = Vector2( 5, 6 )
 
 [node name="entity7" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 416, 480 )
+position = Vector2( 416, 416 )
+cell = Vector2( 6, 6 )
 
 [node name="entity8" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 480, 480 )
+position = Vector2( 480, 416 )
+cell = Vector2( 7, 6 )
 
 [node name="entity9" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 32, 416 )
+position = Vector2( 32, 480 )
+cell = Vector2( 0, 7 )
 
 [node name="entity10" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 96, 416 )
+position = Vector2( 96, 480 )
+cell = Vector2( 1, 7 )
 
 [node name="entity11" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 160, 416 )
+position = Vector2( 160, 480 )
+cell = Vector2( 2, 7 )
 
 [node name="entity12" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 224, 416 )
+position = Vector2( 224, 480 )
+cell = Vector2( 3, 7 )
 
 [node name="entity13" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 288, 416 )
+position = Vector2( 288, 480 )
+cell = Vector2( 4, 7 )
 
 [node name="entity14" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 352, 416 )
+position = Vector2( 352, 480 )
+cell = Vector2( 5, 7 )
 
 [node name="entity15" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 416, 416 )
+position = Vector2( 416, 480 )
+cell = Vector2( 6, 7 )
 
 [node name="entity16" parent="entities/white" instance=ExtResource( 3 )]
-position = Vector2( 480, 416 )
+position = Vector2( 480, 480 )
+cell = Vector2( 7, 7 )
 
 [node name="black" type="Node" parent="entities"]
 
@@ -73,60 +89,75 @@ white = false
 [node name="entity2" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 96, 32 )
 white = false
+cell = Vector2( 1, 0 )
 
 [node name="entity3" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 160, 32 )
 white = false
+cell = Vector2( 2, 0 )
 
 [node name="entity4" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 224, 32 )
 white = false
+cell = Vector2( 3, 0 )
 
 [node name="entity5" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 288, 32 )
 white = false
+cell = Vector2( 4, 0 )
 
 [node name="entity6" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 352, 32 )
 white = false
+cell = Vector2( 5, 0 )
 
 [node name="entity7" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 416, 32 )
 white = false
+cell = Vector2( 6, 0 )
 
 [node name="entity8" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 480, 32 )
 white = false
+cell = Vector2( 7, 0 )
 
 [node name="entity9" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 32, 96 )
 white = false
+cell = Vector2( 0, 1 )
 
 [node name="entity10" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 96, 96 )
 white = false
+cell = Vector2( 1, 1 )
 
 [node name="entity11" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 160, 96 )
 white = false
+cell = Vector2( 2, 1 )
 
 [node name="entity12" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 224, 96 )
 white = false
+cell = Vector2( 3, 1 )
 
 [node name="entity13" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 288, 96 )
 white = false
+cell = Vector2( 4, 1 )
 
 [node name="entity14" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 352, 96 )
 white = false
+cell = Vector2( 5, 1 )
 
 [node name="entity15" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 416, 96 )
 white = false
+cell = Vector2( 6, 1 )
 
 [node name="entity16" parent="entities/black" instance=ExtResource( 3 )]
 position = Vector2( 480, 96 )
 white = false
+cell = Vector2( 7, 1 )
 
