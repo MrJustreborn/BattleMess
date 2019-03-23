@@ -169,4 +169,5 @@ hue_variation = 0.72
 hue_variation_random = 1.0
 
 [node name="Tween" type="Tween" parent="."]
+playback/active = true
 

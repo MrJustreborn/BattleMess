@@ -11,6 +11,7 @@ enum chess_type {
 	rock
 }
 
+export(bool) var ai = true setget setAi;
 export(bool) var isWhite = true setget setWhite;
 export(chess_type) var type = chess_type.pawn setget setChessType;
 export(Vector2) var cell = Vector2(0, 0) setget setCell;
@@ -22,7 +23,7 @@ var current_node: Node
 var possible_moves = []
 
 func _draw():
-	if possible_moves && !OS.is_debug_build():
+	if possible_moves && !OS.is_debug_build() || !ai:
 		for move in possible_moves:
 			var pos = move.pos
 			var to = Vector2(pos.x - cell.x, pos.y - cell.y);
@@ -63,6 +64,12 @@ func _ready():
 func get_posible_moves():
 	return current_node.get_posible_moves(controller);
 
+func setAi(what):
+	ai = what
+	if ai:
+		$you.visible = false;
+	else:
+		$you.visible = true;
 
 func setCell(newPos: Vector2):
 	if newPos.x < 0 || newPos.y < 0 || newPos.x > 7 || newPos.y > 7:

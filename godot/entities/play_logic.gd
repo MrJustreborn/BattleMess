@@ -1,8 +1,6 @@
 tool
 extends "res://entities/entity.gd";
 
-export(bool) var ai = true setget setAi;
-
 var col_move = Color("#a0a0a0")
 var col_kill = Color("#f0000f")
 var col_merge = Color("#000fff")
@@ -137,9 +135,3 @@ func want_to_merge_with(with: Node) -> bool:
 		$next.visible = false;
 	return want;
 
-func setAi(what):
-	ai = what
-	if ai:
-		$you.visible = false;
-	else:
-		$you.visible = true;
