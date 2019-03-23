@@ -24,6 +24,10 @@ config/name="BattleMess"
 run/main_scene="res://board/board.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=550
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
