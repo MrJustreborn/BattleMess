@@ -22,7 +22,7 @@ var current_node: Node
 var possible_moves = []
 
 func _draw():
-	if possible_moves && OS.is_debug_build():
+	if possible_moves && !OS.is_debug_build():
 		for move in possible_moves:
 			var pos = move.pos
 			var to = Vector2(pos.x - cell.x, pos.y - cell.y);

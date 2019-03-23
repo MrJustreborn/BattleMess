@@ -131,7 +131,7 @@ z_index = -1
 script = ExtResource( 20 )
 
 [node name="Circle" type="Node2D" parent="next"]
-rotation = 5.13701
+rotation = 1.15916
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="next/Circle"]
 position = Vector2( 25, 0 )
@@ -147,4 +147,24 @@ color = Color( 0, 0.0392157, 1, 1 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="next"]
 autoplay = "idle"
 anims/idle = SubResource( 2 )
+
+[node name="you" type="Node2D" parent="."]
+visible = false
+z_index = -1
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="you"]
+amount = 32
+emission_shape = 1
+emission_sphere_radius = 16.0
+gravity = Vector2( 0, 0 )
+angular_velocity = 149.43
+angular_velocity_random = 1.0
+radial_accel = 12.5
+angle = 720.0
+angle_random = 1.0
+scale_amount = 5.0
+scale_amount_random = 1.0
+color = Color( 0.360784, 1, 0, 1 )
+hue_variation = 0.72
+hue_variation_random = 1.0
 
