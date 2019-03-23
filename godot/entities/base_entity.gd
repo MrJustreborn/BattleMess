@@ -1,5 +1,7 @@
 extends Node
 
+onready var parent = get_node("../..");
+
 enum GridType {
 	FREE,
 	FRIEND,
@@ -24,10 +26,16 @@ func check_right_down(controller: ChessBoardController, from: Vector2, add: int,
 	return check_down(controller, from, add, isWhite);
 
 func check_up(controller: ChessBoardController, from: Vector2, add: int, isWhite: bool, invert: bool = false):
-	if isWhite || (!isWhite && invert):
-		from.y -= add;
-	elif !isWhite || (isWhite && invert):
-		from.y += add;
+	if isWhite:
+		if invert:
+			from.y += add;
+		else:
+			from.y -= add;
+	else:
+		if !invert:
+			from.y += add;
+		else:
+			from.y -= add;
 	
 	if from.x < 0 || from.y < 0 || from.x > 7 || from.y > 7:
 		return {"type": GridType.WALL, "pos": from};

@@ -1,7 +1,5 @@
 extends "res://entities/base_entity.gd"
 
-onready var parent = get_node("../..");
-
 func _ready():
 	pass
 

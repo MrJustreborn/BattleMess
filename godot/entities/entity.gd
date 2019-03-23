@@ -22,7 +22,7 @@ var current_node: Node
 var possible_moves = []
 
 func _draw():
-	if possible_moves:
+	if possible_moves && OS.is_debug_build():
 		for move in possible_moves:
 			var pos = move.pos
 			var to = Vector2(pos.x - cell.x, pos.y - cell.y);
@@ -30,16 +30,16 @@ func _draw():
 			if move.type == 0: #FREE
 				draw_move(to, Color("#a0a0a0"));
 			elif move.type == 1: #FRIEND
-				draw_move(to, Color("#000fff"));
+				draw_move(to, Color("#000fff"), 10);
 			elif move.type == 2: #OPPONENT
-				draw_move(to, Color("#f0000f"));
+				draw_move(to, Color("#f0000f"), -10);
 			elif move.type == 3: #WALL
 				pass
 			
 
-func draw_move(to: Vector2, color):
-	draw_line(Vector2(), Vector2(to.x * 64, to.y * 64), color, 2, true)
-	draw_circle(Vector2(to.x * 64, to.y * 64), 8, color);
+func draw_move(to: Vector2, color, offset = 0):
+	draw_line(Vector2(offset, 0), Vector2(to.x * 64 + offset, to.y * 64), color, 2, true)
+	draw_circle(Vector2(to.x * 64 + offset, to.y * 64), 8, color);
 
 func _ready():
 	controller = get_node("../../..");
