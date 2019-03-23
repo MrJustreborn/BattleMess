@@ -57,10 +57,10 @@ func _ready():
 	yield(get_tree(),"idle_frame")
 	yield(get_tree(),"idle_frame")
 	if visible:
-		possible_moves = get_posible_moves(controller);
+		possible_moves = get_posible_moves();
 		update()
 
-func get_posible_moves(controller):
+func get_posible_moves():
 	return current_node.get_posible_moves(controller);
 
 

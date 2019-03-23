@@ -1,6 +1,6 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://entities/entity.gd" type="Script" id=1]
+[ext_resource path="res://entities/play_logic.gd" type="Script" id=1]
 [ext_resource path="res://assetes/pawnW2.png" type="Texture" id=2]
 [ext_resource path="res://entities/pawn.gd" type="Script" id=3]
 [ext_resource path="res://assetes/kingW2.png" type="Texture" id=4]
@@ -19,9 +19,27 @@
 [ext_resource path="res://assetes/bishopB2.png" type="Texture" id=17]
 [ext_resource path="res://assetes/knightB2.png" type="Texture" id=18]
 [ext_resource path="res://assetes/rookB2.png" type="Texture" id=19]
+[ext_resource path="res://entities/next.gd" type="Script" id=20]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30, 30 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 3.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Circle:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
 
 [node name="entity" type="Node2D"]
 position = Vector2( 32, 32 )
@@ -106,4 +124,27 @@ visible = false
 scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 19 )
 script = ExtResource( 13 )
+
+[node name="next" type="Node2D" parent="."]
+visible = false
+z_index = -1
+script = ExtResource( 20 )
+
+[node name="Circle" type="Node2D" parent="next"]
+rotation = 5.13701
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="next/Circle"]
+position = Vector2( 25, 0 )
+amount = 32
+local_coords = false
+gravity = Vector2( 0, 0 )
+angle = 720.0
+angle_random = 1.0
+scale_amount = 5.0
+scale_amount_random = 1.0
+color = Color( 0, 0.0392157, 1, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="next"]
+autoplay = "idle"
+anims/idle = SubResource( 2 )
 
