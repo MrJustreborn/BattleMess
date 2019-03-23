@@ -64,14 +64,15 @@ func get_posible_moves():
 	return current_node.get_posible_moves(controller);
 
 
-
-
 func setCell(newPos: Vector2):
 	if newPos.x < 0 || newPos.y < 0 || newPos.x > 7 || newPos.y > 7:
 		newPos = Vector2(0, 0);
 	cell = newPos;
-	position.x = 32 + 64 * cell.x
-	position.y = 32 + 64 * cell.y
+	#position.x = 32 + 64 * cell.x
+	#position.y = 32 + 64 * cell.y
+	var new = Vector2(32 + 64 * cell.x, 32 + 64 * cell.y);
+	$Tween.interpolate_property(self, "position", position, new, 2, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	$Tween.start();
 	
 
 func setChessType(t):

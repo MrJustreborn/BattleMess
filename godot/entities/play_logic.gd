@@ -8,6 +8,7 @@ var col_kill = Color("#f0000f")
 var col_merge = Color("#000fff")
 func _ready():
 	setAi(ai)
+	$Tween.connect("tween_completed", self, "tween_end");
 
 var merge_with = null;
 var next_move = null;
@@ -67,26 +68,46 @@ func cancel_next_move():
 	$next.visible = false;
 
 func perform_next_move():
+	$next.visible = false;
 	controller.remove_node(cell);
 	
 	if next_move != null:
 		if next_move.type == 0: #FREE
 			setCell(next_move.pos);
+			cancel_next_move();
 		elif next_move.type == 1: #FRIEND
-			merge_with.setNextChessType();
-			queue_free();
+			#erge_with.setNextChessType();
+			updateChess = true;
+			#queue_free();
 			#merge_with.setCell(next_move.pos);
+			var new = Vector2(32 + 64 * next_move.pos.x, 32 + 64 * next_move.pos.y);
+			$Tween.interpolate_property(self, "position", position, new, 2, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+			$Tween.start();
 		elif next_move.type == 2: #OPPONENT
-			var toKill = controller.get_cell_item(next_move.pos);
-			toKill.delete();
+			toKill = controller.get_cell_item(next_move.pos);
+			controller.remove_node(toKill.cell);
+			#toKill.delete();
 			setCell(next_move.pos);
 	if !is_queued_for_deletion():
 		controller.add_node(cell, self);
-	cancel_next_move();
+	#cancel_next_move();
 
-func delete():
-	controller.remove_node(cell);
-	queue_free();
+#func delete():
+#	controller.remove_node(cell);
+#	queue_free();
+
+var updateChess = false;
+var toKill = null;
+func tween_end(obj, path):
+	if updateChess:
+		controller.remove_node(cell);
+		merge_with.setNextChessType();
+		queue_free();
+	elif toKill != null:
+		toKill.queue_free();
+	toKill = null;
+	updateChess = false;
+	cancel_next_move();
 
 func setNextChessType():
 	match type:

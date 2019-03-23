@@ -197,20 +197,21 @@ margin_bottom = 57.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
+[node name="next" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
 margin_right = 108.0
 margin_bottom = 20.0
 text = "Nächste Runde"
 
-[node name="Button2" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
+[node name="recalc" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
 margin_left = 112.0
 margin_right = 261.0
 margin_bottom = 20.0
 text = "KI neu würfeln lassen"
 
-[node name="Button3" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
+[node name="reset" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
 margin_left = 265.0
 margin_right = 313.0
 margin_bottom = 20.0
 text = "Reset"
 
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/reset" to="." method="_on_reset_pressed"]

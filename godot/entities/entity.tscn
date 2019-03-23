@@ -131,7 +131,7 @@ z_index = -1
 script = ExtResource( 20 )
 
 [node name="Circle" type="Node2D" parent="next"]
-rotation = 2.03508
+rotation = 2.16132
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="next/Circle"]
 position = Vector2( 25, 0 )
@@ -167,4 +167,6 @@ scale_amount_random = 1.0
 color = Color( 0.360784, 1, 0, 1 )
 hue_variation = 0.72
 hue_variation_random = 1.0
+
+[node name="Tween" type="Tween" parent="."]
 

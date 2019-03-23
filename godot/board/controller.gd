@@ -52,3 +52,7 @@ func get_cell_item(cell: Vector2):
 		tmp = next_board[cell.x][cell.y];
 	return tmp;
 
+
+
+func _on_reset_pressed():
+	get_tree().reload_current_scene();
