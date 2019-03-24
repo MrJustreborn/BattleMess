@@ -68,21 +68,21 @@ func _on_next_pressed():
 	if state == STATE_START:
 		state = STATE_WHITE
 		label.text = "Aktuelle Phase: WHITE";
-		#_on_recalc_pressed();
+		_on_recalc_pressed();
 	
 	elif state == STATE_WHITE:
 		next_board = clean_board.duplicate(true);
 		get_tree().call_group(state, "perform_next_move");
 		state = STATE_BLACK
 		label.text = "Aktuelle Phase: BLACK";
-		#_on_recalc_pressed();
+		_on_recalc_pressed();
 	
 	elif state == STATE_BLACK:
 		next_board = clean_board.duplicate(true);
 		get_tree().call_group(state, "perform_next_move");
 		state = STATE_WHITE
 		label.text = "Aktuelle Phase: WHITE";
-		#_on_recalc_pressed();
+		_on_recalc_pressed();
 
 
 func _on_recalc_pressed():
