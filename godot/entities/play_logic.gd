@@ -14,7 +14,6 @@ func _input(event):
 		var pos = get_viewport().get_mouse_position();
 		
 		var cMouse = Vector2(int(pos.x / 64), int(pos.y / 64));
-		print(cMouse)
 		
 		if event.button_index == 1:
 			for move in possible_moves:

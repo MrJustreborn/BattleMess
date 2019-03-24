@@ -15,8 +15,11 @@ const clean_board = [
 var cur_board = clean_board.duplicate(true);
 var next_board = clean_board.duplicate(true);
 
-func _ready():
-	pass
+const STATE_START = "start";
+const STATE_WHITE = "white";
+const STATE_BLACK = "black";
+
+var state = STATE_START;
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_up"):
@@ -59,3 +62,30 @@ func get_current_board_item(cell: Vector2):
 
 func _on_reset_pressed():
 	get_tree().reload_current_scene();
+
+onready var label = $CanvasLayer/Control/VBoxContainer/Label
+func _on_next_pressed():
+	if state == STATE_START:
+		state = STATE_WHITE
+		label.text = "Aktuelle Phase: WHITE";
+		#_on_recalc_pressed();
+	
+	elif state == STATE_WHITE:
+		next_board = clean_board.duplicate(true);
+		get_tree().call_group(state, "perform_next_move");
+		state = STATE_BLACK
+		label.text = "Aktuelle Phase: BLACK";
+		#_on_recalc_pressed();
+	
+	elif state == STATE_BLACK:
+		next_board = clean_board.duplicate(true);
+		get_tree().call_group(state, "perform_next_move");
+		state = STATE_WHITE
+		label.text = "Aktuelle Phase: WHITE";
+		#_on_recalc_pressed();
+
+
+func _on_recalc_pressed():
+	next_board = clean_board.duplicate(true);
+	get_tree().call_group(state, "cancel_next_move");
+	get_tree().call_group(state, "predict_next_move");

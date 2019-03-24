@@ -182,7 +182,7 @@ margin_bottom = -25.0
 [node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
 margin_right = 500.0
 margin_bottom = 14.0
-text = "Aktuelle Phase: "
+text = "Aktuelle Phase: START"
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer"]
 margin_top = 18.0
@@ -214,4 +214,6 @@ margin_right = 313.0
 margin_bottom = 20.0
 text = "Reset"
 
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/recalc" to="." method="_on_recalc_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/reset" to="." method="_on_reset_pressed"]
