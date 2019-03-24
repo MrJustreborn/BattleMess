@@ -22,8 +22,9 @@ var current_node: Node
 
 var possible_moves = []
 
+var drawingEnabled = false;
 func _draw():
-	if possible_moves && !OS.is_debug_build() || !ai:
+	if possible_moves && !ai && drawingEnabled:
 		for move in possible_moves:
 			var pos = move.pos
 			var to = Vector2(pos.x - cell.x, pos.y - cell.y);
@@ -62,6 +63,7 @@ func _ready():
 		update()
 
 func get_posible_moves():
+	drawingEnabled = true;
 	return current_node.get_posible_moves(controller);
 
 func setAi(what):
@@ -70,6 +72,10 @@ func setAi(what):
 		$you.visible = false;
 	else:
 		$you.visible = true;
+	if ai:
+		set_process_input(false)
+	else:
+		set_process_input(true)
 
 func setCell(newPos: Vector2):
 	if newPos.x < 0 || newPos.y < 0 || newPos.x > 7 || newPos.y > 7:

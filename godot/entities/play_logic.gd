@@ -8,9 +8,40 @@ func _ready():
 	setAi(ai)
 	$Tween.connect("tween_completed", self, "tween_end");
 
+
+func _input(event):
+	if event is InputEventMouseButton && event.is_pressed() == false:
+		var pos = get_viewport().get_mouse_position();
+		
+		var cMouse = Vector2(int(pos.x / 64), int(pos.y / 64));
+		print(cMouse)
+		
+		if event.button_index == 1:
+			for move in possible_moves:
+				if move.pos == cMouse:
+					if !ai && merge_with != null:
+						merge_with.cancel_next_move();
+						merge_with.predict_next_move();
+					update_next(move);
+			
+			pass
+		elif event.button_index == 2:
+			cancel_next_move();
+
 var merge_with = null;
 var next_move = null;
 func predict_next_move():
+	if !ai:
+		possible_moves = get_posible_moves();
+		var ok = [];
+		for m in possible_moves:
+			if m.type == 1 && controller.get_current_board_item(m.pos) == null: #FRIEND
+				continue;
+			else:
+				ok.append(m);
+		possible_moves = ok;
+		update()
+	
 	if !ai || merge_with != null:
 		return
 	
@@ -40,32 +71,22 @@ func predict_next_move():
 		if try > max_tries:
 			return;
 	
-	var pos = move.pos
-	var to = Vector2(pos.x - cell.x, pos.y - cell.y);
-	$next.position = Vector2(to.x * 64, to.y * 64);
-	$next.visible = true;
+	update_next(move);
 	
-	if move.type == 0: #FREE
-		$next/Circle/CPUParticles2D.color = col_move;
-	elif move.type == 1: #FRIEND
-		$next/Circle/CPUParticles2D.color = col_merge;
-	elif move.type == 2: #OPPONENT
-		$next/Circle/CPUParticles2D.color = col_kill;
-	elif move.type == 3: #WALL
-		$next.visible = false;
-	
-	$next.update();
-	next_move = move;
 	if move.type != 3: #WALL
 		controller.add_predict_move(move.pos, self);
 
 func cancel_next_move():
+	#if !ai && merge_with != null:
+	#	merge_with.cancel_next_move();
 	next_move = null;
 	merge_with = null;
 	$next.position = Vector2();
 	$next.visible = false;
 
 func perform_next_move():
+	drawingEnabled = false;
+	update();
 	$next.visible = false;
 	controller.remove_node(cell);
 	
@@ -76,6 +97,8 @@ func perform_next_move():
 		elif next_move.type == 1: #FRIEND
 			#erge_with.setNextChessType();
 			updateChess = true;
+			if merge_with == null:
+				merge_with = controller.get_cell_item(next_move.pos);
 			#queue_free();
 			#merge_with.setCell(next_move.pos);
 			var new = Vector2(32 + 64 * next_move.pos.x, 32 + 64 * next_move.pos.y);
@@ -94,12 +117,32 @@ func perform_next_move():
 #	controller.remove_node(cell);
 #	queue_free();
 
+func update_next(move):
+	var pos = move.pos
+	var to = Vector2(pos.x - cell.x, pos.y - cell.y);
+	$next.position = Vector2(to.x * 64, to.y * 64);
+	$next.visible = true;
+	
+	if move.type == 0: #FREE
+		$next/Circle/CPUParticles2D.color = col_move;
+	elif move.type == 1: #FRIEND
+		$next/Circle/CPUParticles2D.color = col_merge;
+	elif move.type == 2: #OPPONENT
+		$next/Circle/CPUParticles2D.color = col_kill;
+	elif move.type == 3: #WALL
+		$next.visible = false;
+	
+	$next.update();
+	next_move = move;
+
 var updateChess = false;
 var toKill = null;
 func tween_end(obj, path):
 	if updateChess:
 		controller.remove_node(cell);
 		merge_with.setNextChessType();
+		if !ai:
+			merge_with.ai = ai;
 		queue_free();
 	elif toKill != null:
 		toKill.queue_free();
@@ -124,6 +167,8 @@ func setNextChessType():
 
 func want_to_merge_with(with: Node) -> bool:
 	if merge_with != null || type == chess_type.queen:
+		return false;
+	elif !ai && next_move != null:
 		return false;
 	var want: bool = randf() > .5;
 	if want:

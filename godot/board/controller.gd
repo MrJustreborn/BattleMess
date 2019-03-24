@@ -52,6 +52,9 @@ func get_cell_item(cell: Vector2):
 		tmp = next_board[cell.x][cell.y];
 	return tmp;
 
+func get_current_board_item(cell: Vector2):
+	return cur_board[cell.x][cell.y];
+
 
 
 func _on_reset_pressed():
