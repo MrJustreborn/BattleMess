@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://board/black.png" type="Texture" id=1]
+[ext_resource path="res://board/white.png" type="Texture" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 32 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32, 32 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 32, 32 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="moveable_black" type="Sprite" parent="."]
+position = Vector2( 40, 40 )
+texture = ExtResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="moveable_black"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="moveable_black/StaticBody2D"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="moveable_white" type="Sprite" parent="."]
+position = Vector2( 40, 110 )
+texture = ExtResource( 2 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="moveable_white"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="moveable_white/StaticBody2D"]
+shape = SubResource( 2 )
+
+[node name="nonemoveable" type="Sprite" parent="."]
+position = Vector2( 40, 180 )
+texture = ExtResource( 3 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="nonemoveable"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="nonemoveable/StaticBody2D"]
+shape = SubResource( 3 )
+

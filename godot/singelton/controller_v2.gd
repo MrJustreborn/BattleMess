@@ -25,30 +25,30 @@ func request_move(cell: Vector2, who: Node) -> bool:
 	return false;
 
 func _prefill():
-	for y in range(16):
-		for x in range(16):
+	for y in range(8):
+		for x in range(8):
 			current_field[Vector2(x,y)] = [];
 	
 	#black
 	for y in range(2):
-		for x in range(16):
+		for x in range(8):
 			current_field[Vector2(x,y)].append(entity.new());
 	
 	#white
-	for y in range(14,16):
-		for x in range(16):
+	for y in range(6,8):
+		for x in range(8):
 			current_field[Vector2(x,y)].append(entity.new());
 	_pretty_print();
 
 func _pretty_print():
 	print("[TYPE][NUMBER_PLAYER][AI/REAL = a/r]")
-	print("=  =  =  =  =  =  =  =  =  =  =  =  =  =  =  =  =  =")
-	for y in range(16):
+	print("=  =  =  =  =  =  =  =  =  =")
+	for y in range(8):
 		var t = "";
-		for x in range(16):
+		for x in range(8):
 			if current_field[Vector2(x,y)].size() > 0:
 				t += "_" + str(current_field[Vector2(x,y)].size()) + "a";
 			else:
 				t += " · ";
 		print("= " + t + " =")
-	print("=  =  =  =  =  =  =  =  =  =  =  =  =  =  =  =  =  =")
+	print("=  =  =  =  =  =  =  =  =  =")
