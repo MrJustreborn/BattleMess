@@ -13,7 +13,7 @@ func bubble_sort_children(node: Node, axis = "z"):
 	var cnt = node.get_child_count();
 	var n = cnt
 	while n > 0:
-		for i in range(cnt - 1):
+		for i in range(n - 1):
 			var a = node.get_child(i);
 			var b = node.get_child(i + 1);
 			if (a.global_transform.origin[axis] > b.global_transform.origin[axis]):
