@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://test/grid_import_test.gd" type="Script" id=1]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="grid" type="Spatial" parent="."]
+
+[node name="Spatial" type="Spatial" parent="grid"]
+
+[node name="Spatial" type="Spatial" parent="grid/Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.481301, 0, 0.468293 )
+
+[node name="Spatial2" type="Spatial" parent="grid/Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.47642, 0, 0.481301 )
+
+[node name="Spatial3" type="Spatial" parent="grid/Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.49756, 0, 0.500813 )
+
+[node name="Spatial2" type="Spatial" parent="grid"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00650358, 0, 0.919495 )
+
+[node name="Spatial" type="Spatial" parent="grid/Spatial2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.481301, 0, 0.468293 )
+
+[node name="Spatial2" type="Spatial" parent="grid/Spatial2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.47642, 0, 0.481301 )
+
+[node name="Spatial3" type="Spatial" parent="grid/Spatial2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.49756, 0, 0.500813 )
+
+[node name="Spatial3" type="Spatial" parent="grid"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00650358, 0, 1.98433 )
+
+[node name="Spatial" type="Spatial" parent="grid/Spatial3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.481301, 0, 0.468293 )
+
+[node name="Spatial2" type="Spatial" parent="grid/Spatial3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.47642, 0, 0.481301 )
+
+[node name="Spatial3" type="Spatial" parent="grid/Spatial3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.49756, 0, 0.500813 )
+
