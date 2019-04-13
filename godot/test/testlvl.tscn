@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://test/testlvl.escn" type="PackedScene" id=1]
+[ext_resource path="res://test/grid_import_test.gd" type="Script" id=2]
+
+[node name="Scene Root" index="0" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+grid_node = NodePath("grid")
+
+[node name="grid" parent="." index="0"]
+editor/display_folded = true
+
+[node name="entities" type="Spatial" parent="." index="2"]
+
+[node name="Camera" type="Camera" parent="." index="3"]
+transform = Transform( 1, 0, 0, 0, 0.561756, 0.827303, 0, -0.827303, 0.561756, 0.491827, 11.9526, 9.66424 )
+

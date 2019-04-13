@@ -4,14 +4,17 @@ export(NodePath) var grid_node;
 
 var grid: Node = null;
 
+onready var grid_ctrl = preload("res://singelton/controller_v2.gd").new()
+
 func _ready():
 	grid = get_node(grid_node);
 	assert(grid);
 	bubble_sort_children(grid);
 	for i in range(grid.get_child_count()):
 		bubble_sort_children(grid.get_child(i), "x");
-		print(grid.get_child(i).name, " -> ",grid.get_child(i).global_transform.origin);
-	pass
+		#print(grid.get_child(i).name, " -> ",grid.get_child(i).global_transform.origin);
+	grid_ctrl.init_grid(grid, $entities);
+	grid_ctrl.is_cell_free(Vector2(1,1));
 
 func bubble_sort_children(node: Node, axis = "z"):
 	var cnt = node.get_child_count();
@@ -21,7 +24,7 @@ func bubble_sort_children(node: Node, axis = "z"):
 			var a = node.get_child(i);
 			var b = node.get_child(i + 1);
 			if (a.global_transform.origin[axis] > b.global_transform.origin[axis]):
-				print("swap ", a.name, " ",b.name)
+				#print("swap ", a.name, " ",b.name)
 				node.move_child(a, i + 1);
 				node.move_child(b, i);
 		n -= 1;
