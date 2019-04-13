@@ -10,6 +10,42 @@ grid_node = NodePath("grid")
 [node name="grid" parent="." index="0"]
 editor/display_folded = true
 
+[node name="x000" parent="grid" index="0"]
+editor/display_folded = true
+
+[node name="x001" parent="grid" index="1"]
+editor/display_folded = true
+
+[node name="x002" parent="grid" index="2"]
+editor/display_folded = true
+
+[node name="x003" parent="grid" index="3"]
+editor/display_folded = true
+
+[node name="x004" parent="grid" index="4"]
+editor/display_folded = true
+
+[node name="x005" parent="grid" index="5"]
+editor/display_folded = true
+
+[node name="x006" parent="grid" index="6"]
+editor/display_folded = true
+
+[node name="x007" parent="grid" index="7"]
+editor/display_folded = true
+
+[node name="x008" parent="grid" index="8"]
+editor/display_folded = true
+
+[node name="x009" parent="grid" index="9"]
+editor/display_folded = true
+
+[node name="x010" parent="grid" index="10"]
+editor/display_folded = true
+
+[node name="x011" parent="grid" index="11"]
+editor/display_folded = true
+
 [node name="entities" type="Spatial" parent="." index="2"]
 
 [node name="Camera" type="Camera" parent="." index="3"]
