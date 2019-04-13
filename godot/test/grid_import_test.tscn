@@ -4,6 +4,7 @@
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
+grid_node = NodePath("grid")
 
 [node name="grid" type="Spatial" parent="."]
 

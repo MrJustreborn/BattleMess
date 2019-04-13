@@ -1,12 +1,16 @@
 extends Spatial
 
-onready var grid = $grid;
+export(NodePath) var grid_node;
+
+var grid: Node = null;
 
 func _ready():
-	bubble_sort_children(grid)
+	grid = get_node(grid_node);
+	assert(grid);
+	bubble_sort_children(grid);
 	for i in range(grid.get_child_count()):
+		bubble_sort_children(grid.get_child(i), "x");
 		print(grid.get_child(i).name, " -> ",grid.get_child(i).global_transform.origin);
-	
 	pass
 
 func bubble_sort_children(node: Node, axis = "z"):
