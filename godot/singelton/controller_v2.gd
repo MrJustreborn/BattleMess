@@ -29,6 +29,14 @@ func can_move(cell: Vector2) -> bool:
 		return false;
 	#print(cell, " -> ", field_type[cell], " -> ", current_field[cell]);
 	return current_field[cell].empty() && field_type[cell] == "move";
+func can_merge(who: Node, cell: Vector2) -> bool:
+	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
+		return false;
+	return !current_field[cell].empty() && current_field[cell][0].team == who.team;
+func can_kill(who: Node, cell: Vector2) -> bool:
+	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
+		return false;
+	return !current_field[cell].empty() && current_field[cell][0].team != who.team;
 
 func is_cell_free(cell: Vector2) -> bool:
 	assert(grid);
@@ -71,7 +79,7 @@ func init_grid(grid: Node, entities: Node):
 			if cell.name.begins_with("spawn"):
 				var e = test_entity.instance();
 				e.global_transform = cell.global_transform;
-				e.init(self, Vector2(x,y));
+				e.init(self, Vector2(x,y), cell.name.left(8));
 				entities.add_child(e);
 				current_field[Vector2(x,y)].append(e);
 				field_type[Vector2(x,y)] = "spawn";
