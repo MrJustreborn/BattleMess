@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="BattleMess"
-run/main_scene="res://test/LevelEditor.tscn"
+run/main_scene="res://test/testlvl.tscn"
 config/icon="res://icon.png"
 
 [autoload]

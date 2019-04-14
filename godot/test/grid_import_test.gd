@@ -14,7 +14,6 @@ func _ready():
 		bubble_sort_children(grid.get_child(i), "x");
 		#print(grid.get_child(i).name, " -> ",grid.get_child(i).global_transform.origin);
 	grid_ctrl.init_grid(grid, $entities);
-	grid_ctrl.is_cell_free(Vector2(1,1));
 
 func bubble_sort_children(node: Node, axis = "z"):
 	var cnt = node.get_child_count();

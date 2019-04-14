@@ -21,10 +21,20 @@ func _ready():
 	pass;
 
 func cell_to_world(cell: Vector2):
+	#print(cell, " -> ", pos_ref[cell].global_transform);
 	return pos_ref[cell].global_transform
+
+func can_move(cell: Vector2) -> bool:
+	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
+		return false;
+	#print(cell, " -> ", field_type[cell], " -> ", current_field[cell]);
+	return current_field[cell].empty() && field_type[cell] == "move";
 
 func is_cell_free(cell: Vector2) -> bool:
 	assert(grid);
+	
+	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x || cell.y > grid_size.y:
+		return false;
 	
 	print(grid.get_child(cell.y).get_child(cell.x).name);
 	print(pos_ref[cell].name)
