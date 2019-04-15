@@ -25,18 +25,46 @@ func cell_to_world(cell: Vector2):
 	return pos_ref[cell].global_transform
 
 func can_move(cell: Vector2) -> bool:
+	#print(cell, " -> ", field_type[cell], " -> ", current_field[cell]);
+	return _can_move_current(cell) && _can_move_future(cell);
+func can_merge(who: Node, cell: Vector2) -> bool:
+	return _can_merge_current(who, cell) && _can_merge_future(who, cell);
+func can_kill(who: Node, cell: Vector2) -> bool:
+	return _can_kill_current(who, cell) && _can_kill_future(who, cell);
+
+func _can_move_current(cell: Vector2) -> bool:
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
-	#print(cell, " -> ", field_type[cell], " -> ", current_field[cell]);
 	return current_field[cell].empty() && field_type[cell] == "move";
-func can_merge(who: Node, cell: Vector2) -> bool:
+func _can_merge_current(who: Node, cell: Vector2) -> bool:
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
 	return !current_field[cell].empty() && current_field[cell][0].team == who.team;
-func can_kill(who: Node, cell: Vector2) -> bool:
+func _can_kill_current(who: Node, cell: Vector2) -> bool:
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
 	return !current_field[cell].empty() && current_field[cell][0].team != who.team;
+func _can_move_future(cell: Vector2) -> bool:
+	lock.lock();
+	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
+		return false;
+	var can = future_field[cell].empty() && field_type[cell] == "move";
+	lock.unlock();
+	return can;
+func _can_merge_future(who: Node, cell: Vector2) -> bool:
+	lock.lock();
+	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
+		return false;
+	var can = !future_field[cell].empty() && future_field[cell][0].team == who.team && future_field[cell][0] == current_field[cell][0];
+	lock.unlock();
+	return can;
+func _can_kill_future(who: Node, cell: Vector2) -> bool:
+	lock.lock();
+	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
+		return false;
+	var can = !future_field[cell].empty() && future_field[cell][0].team != who.team && future_field[cell][0] == current_field[cell][0];
+	lock.unlock();
+	return can;
 
 func is_cell_free(cell: Vector2) -> bool:
 	assert(grid);
@@ -69,6 +97,7 @@ func init_grid(grid: Node, entities: Node):
 	for y in range(grid_size.y):
 		for x in range(grid_size.x):
 			current_field[Vector2(x,y)] = [];
+			future_field[Vector2(x,y)] = [];
 			field_type[Vector2(x,y)] = "void";
 	
 	var x = 0;
@@ -82,6 +111,7 @@ func init_grid(grid: Node, entities: Node):
 				e.init(self, Vector2(x,y), cell.name.left(8));
 				entities.add_child(e);
 				current_field[Vector2(x,y)].append(e);
+				future_field[Vector2(x,y)].append(e);
 				field_type[Vector2(x,y)] = "spawn";
 			elif cell.name.begins_with("move"):
 				field_type[Vector2(x,y)] = "move";
