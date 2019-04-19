@@ -39,7 +39,7 @@ func can_kill(who: Node, cell: Vector2) -> bool:
 func _can_move_current(cell: Vector2) -> bool:
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
-	return current_field[cell].empty() && field_type[cell] == "move";
+	return current_field[cell].empty() && (field_type[cell] == "move" || field_type[cell] == "move"); #spawn ? 
 func _can_merge_current(who: Node, cell: Vector2) -> bool:
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
@@ -52,7 +52,7 @@ func _can_move_future(cell: Vector2) -> bool:
 	lock.lock();
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
-	var can = future_field[cell].empty() && field_type[cell] == "move";
+	var can = future_field[cell].empty() && (field_type[cell] == "move" || field_type[cell] == "move"); #spawn ? 
 	lock.unlock();
 	return can;
 func _can_merge_future(who: Node, cell: Vector2) -> bool:
@@ -162,6 +162,10 @@ func init_grid(grid: Node, entities: Node):
 			x = x + 1;
 		x = 0;
 		y = y + 1;
+	
+	for c in current_field:
+		if !current_field[c].empty():
+			current_field[c][0]._ready();
 	_pretty_print();
 
 func _pretty_print(what = "Current", field = current_field):
