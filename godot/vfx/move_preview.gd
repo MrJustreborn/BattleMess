@@ -22,13 +22,18 @@ func _hide_action():
 
 func _set_move(what):
 	type = what;
+	$MeshInstance.visible = true;
 	match type:
 		"move":
+			$MeshInstance.visible = false;
 			$MeshInstance.material_override = preload("res://vfx/move_preview.tres");
 			$MeshInstance2.material_override = preload("res://vfx/move_preview.tres");
+			$MeshInstance3.material_override = preload("res://vfx/move_preview.tres");
 		"merge":
 			$MeshInstance.material_override = preload("res://vfx/merge_preview.tres");
 			$MeshInstance2.material_override = preload("res://vfx/merge_preview.tres");
+			$MeshInstance3.material_override = preload("res://vfx/merge_preview.tres");
 		"kill":
 			$MeshInstance.material_override = preload("res://vfx/kill_preview.tres");
 			$MeshInstance2.material_override = preload("res://vfx/kill_preview.tres");
+			$MeshInstance3.material_override = preload("res://vfx/kill_preview.tres");

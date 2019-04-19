@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://vfx/move_preview.gd" type="Script" id=1]
 [ext_resource path="res://vfx/move_preview.tres" type="Material" id=2]
@@ -13,6 +13,9 @@ radius = 0.5
 height = 1.0
 radial_segments = 32
 rings = 16
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 1, 0.2, 1 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "Neue Animation"
@@ -46,6 +49,11 @@ material/0 = null
 visible = false
 material_override = ExtResource( 2 )
 mesh = SubResource( 2 )
+material/0 = null
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+material_override = ExtResource( 2 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
