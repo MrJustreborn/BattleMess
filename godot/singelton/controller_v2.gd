@@ -114,7 +114,7 @@ func _end_turn():
 	for c in current_field:
 		if !current_field[c].empty():
 			for n in current_field[c]:
-				n.init(self, c, n.team);
+				n.update_pos(c);
 	_pretty_print();
 
 func init_grid(grid: Node, entities: Node):
@@ -165,7 +165,7 @@ func init_grid(grid: Node, entities: Node):
 	
 	for c in current_field:
 		if !current_field[c].empty():
-			current_field[c][0]._ready();
+			current_field[c][0].start();
 	_pretty_print();
 
 func _pretty_print(what = "Current", field = current_field):

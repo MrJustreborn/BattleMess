@@ -1,11 +1,16 @@
 extends "res://test/entities/test_entity.gd"
 
-func _ready():
-	._ready();
+func start():
+	.start();
 	_show_moves(true)
 	for c in $move_preview.get_children():
 		c.queue_free();
 	$overlay/user_ctrl.visible = true;
+
+func update_pos(newpos):
+	.update_pos(newpos)
+	for c in $move_preview.get_children():
+		c.queue_free();
 
 func _on_move_mouse_clicked(what, where):
 	._on_move_mouse_clicked(what, where)

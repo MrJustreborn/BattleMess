@@ -41,17 +41,32 @@ var pos = Vector2();
 var team = null;
 
 func _ready():
-	print(team);
-	global_transform = grid_crtl.cell_to_world(pos);
-	_show_moves(false);
+	print("Ready: ",team);
 
 func init(ctrl, cell, team):
 	grid_crtl = ctrl;
 	pos = cell;
 	self.team = team;
 	if is_inside_tree():
-		print("REINIT_ENTITY!");
-		_ready();
+		#print("REINIT_ENTITY!");
+		start();
+
+func start():
+	global_transform = grid_crtl.cell_to_world(pos);
+	_show_moves(false);
+
+func update_pos(newpos): #todo: use setget
+	_show_moves(false);
+	if newpos != pos:
+		pos = newpos;
+		$Tween.interpolate_property(self, "global_transform",
+		global_transform, grid_crtl.cell_to_world(newpos), 1,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		$Tween.connect("tween_completed", self, "_pos_updated", [], CONNECT_ONESHOT);
+		$Tween.start()
+
+func _pos_updated(obj, key):
+	start();
 
 func _get_moves() -> Array:
 	var can_move = [];
