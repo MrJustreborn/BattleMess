@@ -73,11 +73,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="overlay/user_ctrl" index="0"]
-transform = Transform( 0.991186, -0.132477, 5.79073e-09, 0, -4.37114e-08, -1, 0.132477, 0.991186, -4.33261e-08, 0, 0.602533, 0 )
+transform = Transform( -0.0738049, -0.997273, 4.35922e-08, 0, -4.37114e-08, -1, 0.997273, -0.0738049, 3.22611e-09, 0, 0.725655, 0 )
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
+[node name="move_preview" type="Spatial" parent="." index="2"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
 autoplay = "Neue Animation"
 "anims/Neue Animation" = SubResource( 4 )
 

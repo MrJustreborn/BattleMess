@@ -78,18 +78,19 @@ func _show_moves(visible = true):
 			var f = preview.instance();
 			f.type = "move";
 			$overlay/moves.add_child(f);
+			f.connect("clicked", self, "_on_move_mouse_clicked", [m]);
 			f.global_transform = grid_crtl.cell_to_world(m);
 		for m in merges:
 			var f = preview.instance();
 			f.type = "merge";
 			$overlay/moves.add_child(f);
-			#f.get_node("MeshInstance").material_override = preload("res://vfx/merge_preview.tres");
+			f.connect("clicked", self, "_on_move_mouse_clicked", [m]);
 			f.global_transform = grid_crtl.cell_to_world(m);
 		for m in kills:
 			var f = preview.instance();
 			f.type = "kill";
 			$overlay/moves.add_child(f);
-			#f.get_node("MeshInstance").material_override = preload("res://vfx/kill_preview.tres");
+			f.connect("clicked", self, "_on_move_mouse_clicked", [m]);
 			f.global_transform = grid_crtl.cell_to_world(m);
 		$overlay/moves.visible = true;
 	else:
@@ -99,9 +100,11 @@ func _show_moves(visible = true):
 			pass
 		$overlay/moves.visible = false;
 
+func _on_move_mouse_clicked(what, where):
+	print(what, " ", where)
+
 func _on_StaticBody_mouse_entered():
 	_show_moves(true);
-	
 
 func _on_StaticBody_mouse_exited():
 	_show_moves(false);
