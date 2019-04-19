@@ -1,4 +1,3 @@
-tool
 extends Node
 
 var lock: Mutex = Mutex.new();
@@ -10,9 +9,9 @@ var pos_ref = {}
 
 var grid_size = Vector2(8, 8)
 
-var entity = preload("res://test/test_entity.gd")
+var user_ctrl = preload("res://test/entities/user_ctrl.gd")
 
-var test_entity = preload("res://test/testentity.tscn");
+var test_entity = preload("res://test/entities/testentity.tscn");
 
 var grid: Node = null;
 
@@ -107,6 +106,9 @@ func init_grid(grid: Node, entities: Node):
 			pos_ref[Vector2(x,y)] = cell;
 			if cell.name.begins_with("spawn"):
 				var e = test_entity.instance();
+				if Vector2(x,y) == Vector2(10,15):
+					e.set_script(user_ctrl)
+					print("HERE");
 				e.global_transform = cell.global_transform;
 				e.init(self, Vector2(x,y), cell.name.left(8));
 				entities.add_child(e);
