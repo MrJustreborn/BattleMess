@@ -4,7 +4,7 @@ export(NodePath) var grid_node;
 
 var grid: Node = null;
 
-onready var grid_ctrl = preload("res://singelton/controller_v2.gd").new()
+onready var grid_ctrl = get_node("/root/controller")#preload("res://singelton/controller_v2.gd").new()
 
 func _ready():
 	grid = get_node(grid_node);
@@ -14,6 +14,7 @@ func _ready():
 		bubble_sort_children(grid.get_child(i), "x");
 		#print(grid.get_child(i).name, " -> ",grid.get_child(i).global_transform.origin);
 	grid_ctrl.init_grid(grid, $entities);
+	print(grid_ctrl, grid_ctrl.is_inside_tree())
 
 func bubble_sort_children(node: Node, axis = "z"):
 	var cnt = node.get_child_count();

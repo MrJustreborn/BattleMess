@@ -17,7 +17,12 @@ var grid: Node = null;
 
 
 func _ready():
-	pass;
+	current_field = {}
+	future_field = {}
+	field_type = {}
+	pos_ref = {}
+	grid_size = Vector2(8, 8)
+	grid = null;
 
 func cell_to_world(cell: Vector2):
 	#print(cell, " -> ", pos_ref[cell].global_transform);
@@ -79,10 +84,41 @@ func is_cell_free(cell: Vector2) -> bool:
 func get_cell_entity(cell: Vector2) -> Node:
 	return null;
 
-func request_move(cell: Vector2, who: Node) -> bool:
-	return false;
+func request_move(who: Node, cell: Vector2) -> bool:
+	lock.lock();
+	print("request_move: ", cell, " ", who, " can_move:", can_move(cell));#, " merge:", can_merge(who, cell), " kill:", can_kill(who, cell));
+	var can = can_move(cell);
+	if can:
+		var curWhere = _get_future_cell_of(who);
+		future_field[curWhere] = [];
+		future_field[cell].append(who);
+	else:
+		can = cell == _get_future_cell_of(who);
+	lock.unlock();
+	_pretty_print("Future", future_field);
+	return can;
+
+func _get_future_cell_of(who: Node):
+	for n in future_field:
+		if !future_field[n].empty() && future_field[n][0] == who:
+			return n;
+
+func _input(event):
+	if Input.is_action_just_pressed("ui_cancel"):
+		print("end turn");
+		_end_turn();
+
+func _end_turn():
+	for c in future_field:
+		current_field[c] = future_field[c].duplicate();
+	for c in current_field:
+		if !current_field[c].empty():
+			for n in current_field[c]:
+				n.init(self, c, n.team);
+	_pretty_print();
 
 func init_grid(grid: Node, entities: Node):
+	_ready(); #reset
 	self.grid = grid
 	grid_size.y = grid.get_child_count();
 	var children = grid.get_children();
@@ -109,7 +145,6 @@ func init_grid(grid: Node, entities: Node):
 				if Vector2(x,y) == Vector2(10,15):
 					e.set_script(user_ctrl)
 					print("HERE");
-				e.global_transform = cell.global_transform;
 				e.init(self, Vector2(x,y), cell.name.left(8));
 				entities.add_child(e);
 				current_field[Vector2(x,y)].append(e);
@@ -129,9 +164,9 @@ func init_grid(grid: Node, entities: Node):
 		y = y + 1;
 	_pretty_print();
 
-func _pretty_print():
+func _pretty_print(what = "Current", field = current_field):
 	#print("[TYPE][NUMBER_PLAYER][AI/REAL = a/r]")
-	print("\nCurrent field: ")
+	print("\n", what, " field: ")
 	var header = "=";
 	for x in range(grid_size.x + 1):
 		header = header + "  =";
@@ -140,8 +175,8 @@ func _pretty_print():
 	for y in range(grid_size.y):
 		var t = "";
 		for x in range(grid_size.x):
-			if current_field[Vector2(x,y)].size() > 0:
-				t += " " + str(current_field[Vector2(x,y)].size()) + " ";
+			if field[Vector2(x,y)].size() > 0:
+				t += " " + str(field[Vector2(x,y)].size()) + " ";
 			else:
 				t += " " +_get_field_type_char(field_type[Vector2(x,y)])+ " ";
 		print("= " + t + " =")

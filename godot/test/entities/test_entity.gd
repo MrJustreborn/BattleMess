@@ -42,11 +42,16 @@ var team = null;
 
 func _ready():
 	print(team);
+	global_transform = grid_crtl.cell_to_world(pos);
+	_show_moves(false);
 
 func init(ctrl, cell, team):
 	grid_crtl = ctrl;
 	pos = cell;
 	self.team = team;
+	if is_inside_tree():
+		print("REINIT_ENTITY!");
+		_ready();
 
 func _get_moves() -> Array:
 	var can_move = [];
