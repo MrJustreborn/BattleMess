@@ -73,7 +73,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="overlay/user_ctrl" index="0"]
-transform = Transform( -0.0738049, -0.997273, 4.35922e-08, 0, -4.37114e-08, -1, 0.997273, -0.0738049, 3.22611e-09, 0, 0.725655, 0 )
+transform = Transform( 0.553953, 0.832548, -3.63918e-08, 0, -4.37114e-08, -1, -0.832548, 0.553953, -2.4214e-08, 0, 0.640002, 0 )
 mesh = SubResource( 3 )
 material/0 = null
 

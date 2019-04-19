@@ -1,4 +1,4 @@
-extends Node
+extends Spatial
 
 var preview = preload("res://vfx/move_preview.tscn");
 
