@@ -11,12 +11,12 @@ func _ready():
 var time = 0;
 func _process(delta):
 	time += 1;
-	if time % 60 == 0 && !get_tree().is_network_server():
-		rpc_id(1, "_time", get_tree().get_network_unique_id(), "time");
+	if time % 120 == 0 && !get_tree().is_network_server():
+		rpc_id(1, "_time", get_tree().get_network_unique_id(), "ping");
 		time = 0;
 
 remote func _time(who, what):
-	print(who, what);
+	print(get_tree().get_rpc_sender_id()," ", who, " ",what);
 
 func host_server() -> int:
 	var peer = NetworkedMultiplayerENet.new()

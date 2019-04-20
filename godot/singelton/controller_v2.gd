@@ -6,6 +6,7 @@ var current_field = {}
 var future_field = {}
 var field_type = {}
 var pos_ref = {}
+var entities = {}
 
 var grid_size = Vector2(8, 8)
 
@@ -17,6 +18,7 @@ var grid: Node = null;
 
 
 func _ready():
+	get_tree().connect("network_peer_connected", self, "_player_connected")
 	current_field = {}
 	future_field = {}
 	field_type = {}
@@ -104,7 +106,7 @@ func _get_future_cell_of(who: Node):
 			return n;
 
 func _input(event):
-	if Input.is_action_just_pressed("ui_cancel"):
+	if get_tree().is_network_server() && Input.is_action_just_pressed("ui_cancel"):
 		print("end turn");
 		_end_turn();
 
@@ -116,6 +118,22 @@ func _end_turn():
 			for n in current_field[c]:
 				n.update_pos(c);
 	_pretty_print();
+
+func _player_connected(id):
+	if get_tree().is_network_server():
+		print("new player: ", id);
+		for e in entities:
+			if entities[e].empty():
+				var cell = e.pos
+				entities[e].append(id)
+				rpc_id(id, "_set_player", cell);
+				return;
+
+remote func _set_player(cell):
+	var e = current_field[cell][0];
+	var t = e.team;
+	e.set_script(user_ctrl)
+	e.init(self, cell, t);
 
 func init_grid(grid: Node, entities: Node):
 	_ready(); #reset
@@ -143,8 +161,10 @@ func init_grid(grid: Node, entities: Node):
 			if cell.name.begins_with("spawn"):
 				var e = test_entity.instance();
 				entities.add_child(e);
-				if Vector2(x,y) == Vector2(10,15):
+				self.entities[e] = [];
+				if Vector2(x,y) == Vector2(10,15) && get_tree().is_network_server():
 					e.set_script(user_ctrl)
+					self.entities[e].append(get_tree().get_network_unique_id());
 					print("HERE");
 				e.init(self, Vector2(x,y), cell.name.left(8));
 				current_field[Vector2(x,y)].append(e);

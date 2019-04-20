@@ -41,7 +41,9 @@ var pos = Vector2();
 var team = null;
 
 func _ready():
-	print("Ready: ",team);
+	#print("Ready: ",team);
+	#print("Network: ", get_tree().is_network_server());
+	pass
 
 func init(ctrl, cell, team):
 	grid_crtl = ctrl;
