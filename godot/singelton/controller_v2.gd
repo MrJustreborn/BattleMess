@@ -142,11 +142,11 @@ func init_grid(grid: Node, entities: Node):
 			pos_ref[Vector2(x,y)] = cell;
 			if cell.name.begins_with("spawn"):
 				var e = test_entity.instance();
+				entities.add_child(e);
 				if Vector2(x,y) == Vector2(10,15):
 					e.set_script(user_ctrl)
 					print("HERE");
 				e.init(self, Vector2(x,y), cell.name.left(8));
-				entities.add_child(e);
 				current_field[Vector2(x,y)].append(e);
 				future_field[Vector2(x,y)].append(e);
 				field_type[Vector2(x,y)] = "spawn";

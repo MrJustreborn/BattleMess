@@ -26,6 +26,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+network="*res://singelton/network.gd"
 controller="*res://singelton/controller_v2.gd"
 
 [display]
