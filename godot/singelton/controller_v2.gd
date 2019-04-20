@@ -30,6 +30,20 @@ func cell_to_world(cell: Vector2):
 	#print(cell, " -> ", pos_ref[cell].global_transform);
 	return pos_ref[cell].global_transform
 
+master func test_FUNC():
+	var from = get_tree().get_rpc_sender_id();
+	print("CALLED TEST_FUNC: ", from, " ",get_tree().get_network_unique_id())
+	if from == 0 and get_tree().is_network_server():
+		for e in entities:
+			if entities[e].has(from):
+				print("call local")
+				e.set_moves(["test from master"]);
+	else:
+		for e in entities:
+			if entities[e].has(from):
+				print("WRONG CALL, MUST BE MASTER!!")
+				#e.rpc_id(from, "set_moves", "test from master");
+
 func can_move(cell: Vector2) -> bool:
 	#print(cell, " -> ", field_type[cell], " -> ", current_field[cell]);
 	return _can_move_current(cell) && _can_move_future(cell);
@@ -72,19 +86,19 @@ func _can_kill_future(who: Node, cell: Vector2) -> bool:
 	lock.unlock();
 	return can;
 
-func is_cell_free(cell: Vector2) -> bool:
-	assert(grid);
-	
-	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x || cell.y > grid_size.y:
-		return false;
-	
-	print(grid.get_child(cell.y).get_child(cell.x).name);
-	print(pos_ref[cell].name)
-	
-	return false;
+#func is_cell_free(cell: Vector2) -> bool:
+#	assert(grid);
+#	
+#	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x || cell.y > grid_size.y:
+#		return false;
+#	
+#	print(grid.get_child(cell.y).get_child(cell.x).name);
+#	print(pos_ref[cell].name)
+#	
+#	return false;
 
-func get_cell_entity(cell: Vector2) -> Node:
-	return null;
+#func get_cell_entity(cell: Vector2) -> Node:
+#	return null;
 
 func request_move(who: Node, cell: Vector2) -> bool:
 	lock.lock();
@@ -124,6 +138,7 @@ func _player_connected(id):
 		print("new player: ", id);
 		for e in entities:
 			if entities[e].empty():
+				e.name = str(id);
 				var cell = e.pos
 				entities[e].append(id)
 				rpc_id(id, "_set_player", cell);
@@ -133,6 +148,7 @@ remote func _set_player(cell):
 	var e = current_field[cell][0];
 	var t = e.team;
 	e.set_script(user_ctrl)
+	e.name = str(get_tree().get_network_unique_id());
 	e.init(self, cell, t);
 
 func init_grid(grid: Node, entities: Node):
@@ -164,6 +180,7 @@ func init_grid(grid: Node, entities: Node):
 				self.entities[e] = [];
 				if Vector2(x,y) == Vector2(10,15) && get_tree().is_network_server():
 					e.set_script(user_ctrl)
+					self.entities[e].append(0);
 					self.entities[e].append(get_tree().get_network_unique_id());
 					print("HERE");
 				e.init(self, Vector2(x,y), cell.name.left(8));

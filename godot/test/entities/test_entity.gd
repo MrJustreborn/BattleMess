@@ -70,6 +70,24 @@ func update_pos(newpos): #todo: use setget
 func _pos_updated(obj, key):
 	start();
 
+var cur_moves;
+signal got_moves
+puppet func _set_moves_remote(moves: Array):
+	cur_moves = moves;
+	emit_signal("got_moves");
+
+master func _get_moves_remote():
+	var from = get_tree().get_rpc_sender_id();
+	print("get moves remote: ", from)
+	var can_move = [];
+	for m in movementset.move.discrete:
+		if grid_crtl.can_move(pos + m):
+			can_move.append(pos + m);
+	if from == 0 and get_tree().is_network_server():
+		_set_moves_remote(can_move);
+	else:
+		rpc_id(from, "_set_moves_remote", can_move);
+
 func _get_moves() -> Array:
 	var can_move = [];
 	for m in movementset.move.discrete:
@@ -92,6 +110,11 @@ func _get_kills() -> Array:
 func _show_moves(visible = true):
 	if visible:
 		#$Cone.scale = Vector3(1.2, 1.2, 1.2);
+		print("pre: ", cur_moves)
+		rpc("_get_moves_remote");
+		yield(self,"got_moves")
+		print("post: ", cur_moves)
+		#print(name)
 		var moves = _get_moves();
 		var merges = _get_merges();
 		var kills = _get_kills();
