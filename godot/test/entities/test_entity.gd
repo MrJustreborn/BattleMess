@@ -57,7 +57,7 @@ func start():
 	global_transform = grid_crtl.cell_to_world(pos);
 	_show_moves(false);
 
-func update_pos(newpos): #todo: use setget
+remotesync func update_pos(newpos): #todo: use setget
 	_show_moves(false);
 	if newpos != pos:
 		pos = newpos;
@@ -66,6 +66,8 @@ func update_pos(newpos): #todo: use setget
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		$Tween.connect("tween_completed", self, "_pos_updated", [], CONNECT_ONESHOT);
 		$Tween.start()
+	else:
+		_pos_updated(null, null);
 
 func _pos_updated(obj, key):
 	start();

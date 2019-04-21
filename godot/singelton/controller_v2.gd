@@ -97,10 +97,16 @@ func _can_kill_future(who: Node, cell: Vector2) -> bool:
 #	
 #	return false;
 
-#func get_cell_entity(cell: Vector2) -> Node:
-#	return null;
+func get_ref(id):
+	print("Get ref for: ", id)
+	for n in entities:
+		if !entities[n].empty() && entities[n].has(id):
+			print(n, " -> ", n.name);
+			return n;
 
-func request_move(who: Node, cell: Vector2) -> bool:
+master func request_move(cell: Vector2) -> bool:
+	var from = get_tree().get_rpc_sender_id();
+	var who = get_ref(from);
 	lock.lock();
 	print("request_move: ", cell, " ", who, " can_move:", can_move(cell));#, " merge:", can_merge(who, cell), " kill:", can_kill(who, cell));
 	var can = can_move(cell);
@@ -112,6 +118,12 @@ func request_move(who: Node, cell: Vector2) -> bool:
 		can = cell == _get_future_cell_of(who);
 	lock.unlock();
 	_pretty_print("Future", future_field);
+	if can:
+		print("send rpc to: ", from)
+		if from == 0 || from == 1:
+			who._move_request_accepted(cell);
+		else:
+			who.rpc_id(from, "_move_request_accepted", cell);
 	return can;
 
 func _get_future_cell_of(who: Node):
@@ -130,7 +142,7 @@ func _end_turn():
 	for c in current_field:
 		if !current_field[c].empty():
 			for n in current_field[c]:
-				n.update_pos(c);
+				n.rpc("update_pos", c);
 	_pretty_print();
 
 func _player_connected(id):
@@ -144,12 +156,11 @@ func _player_connected(id):
 				rpc_id(id, "_set_player", cell);
 				break;
 		for e in entities:
-			if !entities[e].empty():
-				rpc("_update_player_node_name", e.pos, entities[e][0]);
+				rpc("_update_player_node_name", e.pos, e.name);
 
-puppet func _update_player_node_name(cell, id):
-	print("update: ", cell, " -> ", id)
-	current_field[cell][0].name = str(id)
+puppet func _update_player_node_name(cell, new_name): #todo: is this reliable?
+	print("update: ", cell, " -> ", new_name);
+	current_field[cell][0].name = new_name;
 
 remote func _set_player(cell):
 	var e = current_field[cell][0];
@@ -183,10 +194,12 @@ func init_grid(grid: Node, entities: Node):
 			pos_ref[Vector2(x,y)] = cell;
 			if cell.name.begins_with("spawn"):
 				var e = test_entity.instance();
+				e.name = "Bot " + str(x) + str(y);
 				entities.add_child(e);
 				self.entities[e] = [];
 				if Vector2(x,y) == Vector2(10,15) && get_tree().is_network_server():
 					e.set_script(user_ctrl)
+					e.name = "1"
 					self.entities[e].append(0);
 					self.entities[e].append(get_tree().get_network_unique_id());
 					print("HERE");

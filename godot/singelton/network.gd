@@ -16,7 +16,8 @@ func _process(delta):
 		time = 0;
 
 remote func _time(who, what):
-	print(get_tree().get_rpc_sender_id()," ", who, " ",what);
+	#print(get_tree().get_rpc_sender_id()," ", who, " ",what);
+	pass
 
 func host_server() -> int:
 	var peer = NetworkedMultiplayerENet.new()
