@@ -142,7 +142,14 @@ func _player_connected(id):
 				var cell = e.pos
 				entities[e].append(id)
 				rpc_id(id, "_set_player", cell);
-				return;
+				break;
+		for e in entities:
+			if !entities[e].empty():
+				rpc("_update_player_node_name", e.pos, entities[e][0]);
+
+puppet func _update_player_node_name(cell, id):
+	print("update: ", cell, " -> ", id)
+	current_field[cell][0].name = str(id)
 
 remote func _set_player(cell):
 	var e = current_field[cell][0];
