@@ -26,7 +26,7 @@ func _on_move_mouse_clicked(what, where):
 	#m.global_transform = grid_crtl.cell_to_world(where);
 
 remote func _move_request_accepted(where):
-	var m = $Cone.duplicate();
+	var m = $piece.duplicate();
 	$move_preview.add_child(m);
 	m.material_override = preload("res://test/entities/shadow_mat.tres");
 	m.global_transform = grid_crtl.cell_to_world(where);

@@ -41,6 +41,7 @@ var pos = Vector2();
 var team = null;
 
 func _ready():
+	$piece.mesh = preload("res://test/entities/cone_mesh.tres")
 	#print("Ready: ",team);
 	#print("Network: ", get_tree().is_network_server());
 	pass
