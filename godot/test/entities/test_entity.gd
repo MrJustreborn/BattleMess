@@ -33,15 +33,15 @@ func _ready():
 	#print("Network: ", get_tree().is_network_server());
 	pass
 
-func init(ctrl, cell, team):
+func init(ctrl, cell, team, piece = "pawn"):
 	grid_crtl = ctrl;
 	pos = cell;
 	self.team = team;
 	if is_inside_tree():
 		#print("REINIT_ENTITY!");
 		start();
-	$piece.mesh = get_node("/root/piece_loader").get_mesh("pawn");
-	movementset = get_node("/root/piece_loader").get_movementset("pawn");
+	$piece.mesh = get_node("/root/piece_loader").get_mesh(piece);
+	movementset = get_node("/root/piece_loader").get_movementset(piece);
 
 func start():
 	global_transform = grid_crtl.cell_to_world(pos);
