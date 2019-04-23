@@ -9,27 +9,15 @@ var movementset = {
 		continuous = []
 	},
 	move = {
-		discrete = [
-					Vector2(0, -1), Vector2(0, -2),
-					Vector2(0, 1), Vector2(0, 2),
-					Vector2(-1, 0), Vector2(-2, 0),
-					Vector2(1, 0), Vector2(2, 0)
-					],
+		discrete = [],
 		continuous = []
 	},
 	merge = {
-		discrete = [
-					Vector2(1, 1),
-					Vector2(1, -1),
-					Vector2(-1, 1),
-					Vector2(-1, -1),
-					],
+		discrete = [],
 		continuous = []
 	},
 	kill = {
-		discrete = [
-					Vector2(-9, -15)
-					],
+		discrete = [],
 		continuous = [],
 		move_on_discete = true,
 		move_on_continuous = true
@@ -41,7 +29,6 @@ var pos = Vector2();
 var team = null;
 
 func _ready():
-	$piece.mesh = preload("res://test/entities/cone_mesh.tres")
 	#print("Ready: ",team);
 	#print("Network: ", get_tree().is_network_server());
 	pass
@@ -53,6 +40,8 @@ func init(ctrl, cell, team):
 	if is_inside_tree():
 		#print("REINIT_ENTITY!");
 		start();
+	$piece.mesh = get_node("/root/piece_loader").get_mesh("pawn");
+	movementset = get_node("/root/piece_loader").get_movementset("pawn");
 
 func start():
 	global_transform = grid_crtl.cell_to_world(pos);

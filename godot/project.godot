@@ -28,6 +28,7 @@ config/icon="res://icon.png"
 
 network="*res://singelton/network.gd"
 controller="*res://singelton/controller_v2.gd"
+piece_loader="*res://singelton/piece_loader.gd"
 
 [display]
 
