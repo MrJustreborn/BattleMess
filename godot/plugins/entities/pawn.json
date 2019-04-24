@@ -1,5 +1,7 @@
 {
-	"mesh": "./pawn_mesh.tres",
+	"level": 1,
+	"mesh": "res://plugins/entities/pawn_mesh.tres",
+	"texture": null,
 	"movementset": {
 		"first_move": {
 			"discrete": [],
