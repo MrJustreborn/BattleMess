@@ -66,9 +66,9 @@ func _load(what: Dictionary):
 	db[what.id]["movementset"] = movementset.duplicate();
 
 func get_mesh(what: String):
-	print("load piece: ", what)
+	#print("load piece: ", what)
 	return db[what]["mesh"]# preload("res://test/entities/cone_mesh.tres");
 
 func get_movementset(what: String):
-	print("load movement: ", what)
+	# print("load movement: ", what)
 	return db[what]["movementset"].duplicate();

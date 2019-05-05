@@ -3,6 +3,15 @@ extends Node
 var players = {};
 
 func _ready():
+	print("\n===\n")
+	var f = File.new()
+	if f.file_exists("res://singelton/server.gd"):
+		var test = load("res://singelton/server.gd")
+		print(test)
+		test = test.new();
+		print(test)
+	print("\n===\n")
+	
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("connected_to_server", self, "_connected_to_server_ok")
 	if host_server() != OK:
@@ -30,7 +39,7 @@ func host_server() -> int:
 
 func join_server():
 	var peer_join = NetworkedMultiplayerENet.new()
-	peer_join.create_client("127.0.0.1", 4242)
+	peer_join.create_client("127.0.0.1", 4242)#, 0, 0, 8520) # local-port: needed for NAT-punchtrough
 	get_tree().set_network_peer(peer_join)	
 	#checks:
 	print("Joining...This is my ID: ", str(get_tree().get_network_unique_id())) 
