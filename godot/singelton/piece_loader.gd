@@ -22,6 +22,8 @@ var test_movementset: Dictionary = {
 		}
 	};
 
+var db = {}
+
 func _ready():
 	var f = File.new();
 	f.open("res://plugins/entities/pawn.json", File.READ);
@@ -30,21 +32,43 @@ func _ready():
 	_load(result);
 
 func _load(what: Dictionary):
-	test_mesh = load(what.mesh);
+	var mesh
+	var movementset = test_movementset.duplicate();
+	mesh = load(what.mesh);
+	
+	for pos in what.movementset.first_move.discrete:
+		movementset.first_move.discrete.append(Vector2(pos.x, pos.y));
+	for pos in what.movementset.first_move.continuous:
+		movementset.first_move.continuous.append(Vector2(pos.x, pos.y));
 	
 	for pos in what.movementset.move.discrete:
-		test_movementset.move.discrete.append(Vector2(pos.x, pos.y));
+		movementset.move.discrete.append(Vector2(pos.x, pos.y));
+	for pos in what.movementset.move.continuous:
+		movementset.move.continuous.append(Vector2(pos.x, pos.y));
 	
 	for pos in what.movementset.merge.discrete:
-		test_movementset.merge.discrete.append(Vector2(pos.x, pos.y));
+		movementset.merge.discrete.append(Vector2(pos.x, pos.y));
+	for pos in what.movementset.merge.continuous:
+		movementset.merge.continuous.append(Vector2(pos.x, pos.y));
 	
 	for pos in what.movementset.kill.discrete:
-		test_movementset.kill.discrete.append(Vector2(pos.x, pos.y));
+		movementset.kill.discrete.append(Vector2(pos.x, pos.y));
+	for pos in what.movementset.kill.continuous:
+		movementset.kill.continuous.append(Vector2(pos.x, pos.y));
+	
+	movementset.kill.move_on_discete = what.movementset.kill.move_on_discete
+	movementset.kill.move_on_continuous = what.movementset.kill.move_on_continuous
+	
+	db[what.id] = {}
+	db[what.id]["name"] = what.name
+	db[what.id]["level"] = what.level
+	db[what.id]["mesh"] = mesh.duplicate();
+	db[what.id]["movementset"] = movementset.duplicate();
 
 func get_mesh(what: String):
 	print("load piece: ", what)
-	return preload("res://test/entities/cone_mesh.tres");
+	return db[what]["mesh"]# preload("res://test/entities/cone_mesh.tres");
 
 func get_movementset(what: String):
 	print("load movement: ", what)
-	return test_movementset.duplicate();
+	return db[what]["movementset"].duplicate();

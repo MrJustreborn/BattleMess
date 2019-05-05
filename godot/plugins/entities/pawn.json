@@ -1,4 +1,6 @@
 {
+	"id": "pawn",
+	"name": "Bauer",
 	"level": 1,
 	"mesh": "res://plugins/entities/pawn_mesh.tres",
 	"texture": null,
