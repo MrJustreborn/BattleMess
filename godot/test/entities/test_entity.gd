@@ -107,7 +107,7 @@ func _show_moves(visible = true):
 		yield(self,"got_moves")
 		print("post: ", cur_moves)
 		#print(name)
-		var moves = _get_moves();
+		var moves = cur_moves;#_get_moves();
 		var merges = _get_merges();
 		var kills = _get_kills();
 		
@@ -140,8 +140,8 @@ func _show_moves(visible = true):
 func _on_move_mouse_clicked(what, where):
 	print(what, " ", where)
 
-func _on_StaticBody_mouse_entered():
-	_show_moves(true);
+#func _on_StaticBody_mouse_entered():
+#	_show_moves(true);
 
-func _on_StaticBody_mouse_exited():
-	_show_moves(false);
+#func _on_StaticBody_mouse_exited():
+#	_show_moves(false);

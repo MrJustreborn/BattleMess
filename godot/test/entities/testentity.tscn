@@ -71,4 +71,3 @@ autoplay = "Neue Animation"
 "anims/Neue Animation" = SubResource( 4 )
 
 [node name="Tween" type="Tween" parent="."]
-

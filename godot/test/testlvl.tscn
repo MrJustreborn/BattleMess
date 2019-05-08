@@ -50,4 +50,3 @@ editor/display_folded = true
 
 [node name="Camera" type="Camera" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, 0.561756, 0.827303, 0, -0.827303, 0.561756, 0.491827, 12.1315, 9.28707 )
-
