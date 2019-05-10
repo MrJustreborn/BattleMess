@@ -51,9 +51,20 @@ remotesync func update_pos(newpos): #todo: use setget
 	_show_moves(false);
 	if newpos != pos:
 		pos = newpos;
-		$Tween.interpolate_property(self, "global_transform",
-		global_transform, grid_crtl.cell_to_world(newpos), 1,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		#$Tween.interpolate_property(self, "global_transform",
+		#global_transform, grid_crtl.cell_to_world(newpos), 1,
+		#Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		#$Tween.connect("tween_completed", self, "_pos_updated", [], CONNECT_ONESHOT);
+		#$Tween.start()
+		var origin = global_transform.origin ;
+		var newOrigin = grid_crtl.cell_to_world(newpos).origin;
+		var heighPoint = (origin + newOrigin) / 2;
+		heighPoint.y += (newOrigin - origin).length();
+		jumpCurve.clear_points();
+		jumpCurve.add_point(origin);
+		jumpCurve.add_point(heighPoint)#, Vector3(0, 0, 1), Vector3(0, 0, -1)); #todo calc controll points
+		jumpCurve.add_point(newOrigin);
+		$Tween.interpolate_method(self, "_jump", 0.0, jumpCurve.get_baked_length(), jumpCurve.get_baked_length()/5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		$Tween.connect("tween_completed", self, "_pos_updated", [], CONNECT_ONESHOT);
 		$Tween.start()
 	else:
@@ -61,6 +72,11 @@ remotesync func update_pos(newpos): #todo: use setget
 
 func _pos_updated(obj, key):
 	start();
+
+var jumpCurve = Curve3D.new()
+func _jump(pos: float):
+	print("JUMP: " + str(pos), jumpCurve.interpolate_baked(pos),jumpCurve.get_baked_length())
+	global_transform.origin = jumpCurve.interpolate_baked(pos);
 
 var cur_moves;
 signal got_moves
