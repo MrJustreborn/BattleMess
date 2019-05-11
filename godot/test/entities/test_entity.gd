@@ -31,6 +31,7 @@ var team = null;
 func _ready():
 	#print("Ready: ",team);
 	#print("Network: ", get_tree().is_network_server());
+	add_to_group(team)
 	pass
 
 func init(ctrl, cell, team, piece = "pawn"):
@@ -56,7 +57,7 @@ remotesync func update_pos(newpos): #todo: use setget
 		#Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		#$Tween.connect("tween_completed", self, "_pos_updated", [], CONNECT_ONESHOT);
 		#$Tween.start()
-		var origin = global_transform.origin ;
+		var origin = global_transform.origin;
 		var newOrigin = grid_crtl.cell_to_world(newpos).origin;
 		var heighPoint = (origin + newOrigin) / 2;
 		heighPoint.y += (newOrigin - origin).length();
@@ -75,7 +76,6 @@ func _pos_updated(obj, key):
 
 var jumpCurve = Curve3D.new()
 func _jump(pos: float):
-	print("JUMP: " + str(pos), jumpCurve.interpolate_baked(pos),jumpCurve.get_baked_length())
 	global_transform.origin = jumpCurve.interpolate_baked(pos);
 
 var cur_moves;
@@ -97,11 +97,9 @@ master func _get_moves_remote():
 		rpc_id(from, "_set_moves_remote", can_move);
 
 func _get_moves() -> Array:
-	var can_move = [];
-	for m in movementset.move.discrete:
-		if grid_crtl.can_move(pos + m):
-			can_move.append(pos + m);
-	return can_move;
+	rpc("_get_moves_remote");
+	yield(self,"got_moves")
+	return cur_moves;
 func _get_merges() -> Array:
 	var can_merge = [];
 	for m in movementset.merge.discrete:
@@ -118,14 +116,15 @@ func _get_kills() -> Array:
 func _show_moves(visible = true):
 	if visible:
 		#$Cone.scale = Vector3(1.2, 1.2, 1.2);
-		print("pre: ", cur_moves)
-		rpc("_get_moves_remote");
-		yield(self,"got_moves")
-		print("post: ", cur_moves)
-		#print(name)
-		var moves = cur_moves;#_get_moves();
+		var moves = _get_moves();
+		if typeof(moves) == TYPE_OBJECT and moves.is_class("GDScriptFunctionState"):
+			moves = yield(moves, "completed")
 		var merges = _get_merges();
+		if typeof(merges) == TYPE_OBJECT and merges.is_class("GDScriptFunctionState"):
+			merges = yield(merges, "completed")
 		var kills = _get_kills();
+		if typeof(kills) == TYPE_OBJECT and kills.is_class("GDScriptFunctionState"):
+			kills = yield(kills, "completed")
 		
 		for m in moves:
 			var f = preview.instance();
