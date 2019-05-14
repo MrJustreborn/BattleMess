@@ -7,6 +7,7 @@ var future_field = {}
 var field_type = {}
 var pos_ref = {}
 var entities = {}
+var teams = {}
 
 var grid_size = Vector2(8, 8)
 
@@ -133,8 +134,10 @@ func _get_future_cell_of(who: Node):
 
 func _input(event):
 	if get_tree().is_network_server() && Input.is_action_just_pressed("ui_cancel"):
+		get_tree().call_group('spawn[1]', 'add_to_group', 'active') #should rpc
 		print("end turn");
 		_end_turn();
+		print(teams)
 
 func _end_turn():
 	for c in future_field:
@@ -203,6 +206,7 @@ func init_grid(grid: Node, entities: Node):
 					self.entities[e].append(0);
 					self.entities[e].append(get_tree().get_network_unique_id());
 					print("HERE");
+				teams[cell.name.left(8)] = true;
 				e.init(self, Vector2(x,y), cell.name.left(8));
 				current_field[Vector2(x,y)].append(e);
 				future_field[Vector2(x,y)].append(e);

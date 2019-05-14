@@ -29,15 +29,16 @@ var pos = Vector2();
 var team = null;
 
 func _ready():
-	#print("Ready: ",team);
+	print("Ready: ",team);
 	#print("Network: ", get_tree().is_network_server());
-	add_to_group(team)
+	#add_to_group(team)
 	pass
 
 func init(ctrl, cell, team, piece = "pawn"):
 	grid_crtl = ctrl;
 	pos = cell;
 	self.team = team;
+	add_to_group(team)
 	if is_inside_tree():
 		#print("REINIT_ENTITY!");
 		start();
@@ -114,7 +115,7 @@ func _get_kills() -> Array:
 	return can_kill;
 
 func _show_moves(visible = true):
-	if visible:
+	if visible && is_in_group('active'):
 		#$Cone.scale = Vector3(1.2, 1.2, 1.2);
 		var moves = _get_moves();
 		if typeof(moves) == TYPE_OBJECT and moves.is_class("GDScriptFunctionState"):
