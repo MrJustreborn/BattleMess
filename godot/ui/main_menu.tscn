@@ -1,0 +1,112 @@
+[gd_scene format=2]
+
+[node name="Main_Menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 1004.0
+margin_bottom = 261.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 265.0
+margin_right = 1004.0
+margin_bottom = 290.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 280.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 284.0
+margin_top = 5.0
+margin_right = 366.0
+margin_bottom = 19.0
+text = "IP-Addresse:"
+
+[node name="ip" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 370.0
+margin_right = 650.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 0, 25 )
+size_flags_horizontal = 3
+text = "localhost"
+max_length = 15
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 654.0
+margin_top = 5.0
+margin_right = 658.0
+margin_bottom = 19.0
+text = ":"
+
+[node name="port" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 662.0
+margin_right = 720.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 50, 25 )
+text = "6705"
+max_length = 5
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 724.0
+margin_right = 1004.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 294.0
+margin_right = 1004.0
+margin_bottom = 314.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_right = 248.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Host" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 252.0
+margin_right = 500.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Host"
+
+[node name="Join" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 504.0
+margin_right = 752.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Join"
+
+[node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 756.0
+margin_right = 1004.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 318.0
+margin_right = 1004.0
+margin_bottom = 580.0
+size_flags_horizontal = 3
+size_flags_vertical = 3

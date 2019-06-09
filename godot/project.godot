@@ -30,10 +30,6 @@ network="*res://singelton/network.gd"
 controller="*res://singelton/controller_v2.gd"
 piece_loader="*res://singelton/piece_loader.gd"
 
-[display]
-
-window/size/width=550
-
 [rendering]
 
 vram_compression/import_etc=true
