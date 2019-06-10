@@ -17,8 +17,9 @@ var test_entity = preload("res://test/entities/testentity.tscn");
 
 var grid: Node = null;
 
-
+var is_init: bool = false;
 func _ready():
+	is_init = false;
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	current_field = {}
 	future_field = {}
@@ -133,8 +134,8 @@ func _get_future_cell_of(who: Node):
 			return n;
 
 func _input(event):
-	if get_tree().is_network_server() && Input.is_action_just_pressed("ui_cancel"):
-		get_tree().call_group('spawn[1]', 'add_to_group', 'active') #should rpc
+	if is_init && get_tree().is_network_server() && Input.is_action_just_pressed("ui_cancel"):
+		get_tree().call_group('spawn[1]', 'add_to_group', 'active') #TODO: should rpc
 		print("end turn");
 		_end_turn();
 		print(teams)
@@ -174,6 +175,7 @@ remote func _set_player(cell):
 
 func init_grid(grid: Node, entities: Node):
 	_ready(); #reset
+	is_init = true;
 	self.grid = grid
 	grid_size.y = grid.get_child_count();
 	var children = grid.get_children();

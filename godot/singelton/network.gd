@@ -14,8 +14,8 @@ func _ready():
 	
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("connected_to_server", self, "_connected_to_server_ok")
-	if host_server() != OK:
-		join_server();
+#	if host_server() != OK:
+#		join_server();
 
 var time = 0;
 func _process(delta):
@@ -39,10 +39,11 @@ func host_server() -> int:
 
 func join_server():
 	var peer_join = NetworkedMultiplayerENet.new()
-	peer_join.create_client("127.0.0.1", 4242)#, 0, 0, 8520) # local-port: needed for NAT-punchtrough
+	var err = peer_join.create_client("127.0.0.1", 4242)#, 0, 0, 8520) # local-port: needed for NAT-punchtrough
 	get_tree().set_network_peer(peer_join)	
 	#checks:
 	print("Joining...This is my ID: ", str(get_tree().get_network_unique_id())) 
+	return err;
 
 func _player_connected(id): #when someone else connects, I will register the player into my player list dictionary
 	print("Hello other players. I just connected and I wont see this message!: ", id)
