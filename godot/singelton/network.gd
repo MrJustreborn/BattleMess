@@ -1,5 +1,7 @@
 extends Node
 
+onready var globals = $"/root/globals";
+
 var players = {};
 
 func _ready():
@@ -30,7 +32,7 @@ remote func _time(who, what):
 
 func host_server() -> int:
 	var peer = NetworkedMultiplayerENet.new()
-	var err = peer.create_server(4242, 18) # test-map
+	var err = peer.create_server(globals.port, 18) # test-map
 	if err == OK:
 		get_tree().set_network_peer(peer)
 		#checks:
@@ -39,7 +41,7 @@ func host_server() -> int:
 
 func join_server():
 	var peer_join = NetworkedMultiplayerENet.new()
-	var err = peer_join.create_client("127.0.0.1", 4242)#, 0, 0, 8520) # local-port: needed for NAT-punchtrough
+	var err = peer_join.create_client(globals.ip, globals.port)#, 0, 0, 8520) # local-port: needed for NAT-punchtrough
 	get_tree().set_network_peer(peer_join)	
 	#checks:
 	print("Joining...This is my ID: ", str(get_tree().get_network_unique_id())) 
