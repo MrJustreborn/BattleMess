@@ -3,6 +3,7 @@ extends Control
 onready var globals = $"/root/globals";
 onready var ip_label = get_node("VBoxContainer/HBoxContainer2/ip");
 onready var port = get_node("VBoxContainer/HBoxContainer2/port");
+onready var player_name = get_node("VBoxContainer/HBoxContainer3/name");
 
 func _ready():
 	pass
@@ -10,6 +11,7 @@ func _ready():
 func _set_address():
 	globals.ip = ip_label.text;
 	globals.port = int(port.text);
+	globals.player_name = player_name.text;
 
 func _on_Host_pressed():
 	_set_address()

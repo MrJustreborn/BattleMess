@@ -42,9 +42,10 @@ func host_server() -> int:
 func join_server():
 	var peer_join = NetworkedMultiplayerENet.new()
 	var err = peer_join.create_client(globals.ip, globals.port)#, 0, 0, 8520) # local-port: needed for NAT-punchtrough
-	get_tree().set_network_peer(peer_join)	
-	#checks:
-	print("Joining...This is my ID: ", str(get_tree().get_network_unique_id())) 
+	if err == OK:
+		get_tree().set_network_peer(peer_join)
+		#checks:
+		print("Joining...This is my ID: ", str(get_tree().get_network_unique_id())) 
 	return err;
 
 func _player_connected(id): #when someone else connects, I will register the player into my player list dictionary
@@ -52,25 +53,31 @@ func _player_connected(id): #when someone else connects, I will register the pla
 	#rpc("register_player", get_tree().get_network_unique_id())
 	register_player(id)
 
-remote func register_player(id): 
-	print("Everyone sees this.. adding this id to your array! ", id) # everyone sees this
+master func _set_name(player_name):
+	var origin = get_tree().get_rpc_sender_id();
+	register_player(origin, player_name);
+
+remote func register_player(id, player_name = ""): 
+	print("Everyone sees this.. adding this id to your array! ", id, "(",player_name,")") # everyone sees this
 	#the server will see this... better tell this guy who else is already in...
 	#if !(id in players):
-	players[id] = ""
+	players[id] = player_name
 	
 	# Server sends the info of existing players back to the new player
 	if get_tree().is_network_server():
 		# Send my info to the new player
-		rpc_id(id, "register_player", 1) #rpc_id only targets player with specified ID
+		rpc_id(id, "register_player", 1, globals.player_name) #rpc_id only targets player with specified ID
 		
 		# Send the info of existing players to the new player from ther server's personal list
 		for peer_id in players:
-			rpc_id(id, "register_player", peer_id) #rpc_id only targets player with specified ID
+			rpc_id(id, "register_player", peer_id, players[peer_id]) #rpc_id only targets player with specified ID
 		rpc("update_player_list") # not needed, just double checks everyone on same page
+	elif players[get_tree().get_network_unique_id()] != globals.player_name:
+		rpc("_set_name", globals.player_name);
 #Not needed, double check everyone on sme page
 remote func update_player_list():
 	for x in players:
-		print(x)
+		print("Player: ", x, " -> ", players[x]);
 
 
 
