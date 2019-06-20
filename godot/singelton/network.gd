@@ -37,6 +37,7 @@ func host_server() -> int:
 		get_tree().set_network_peer(peer)
 		#checks:
 		print("Hosting...This is my ID: ", str(get_tree().get_network_unique_id()))
+		players[1] = globals.player_name
 	return err;
 
 func join_server():
