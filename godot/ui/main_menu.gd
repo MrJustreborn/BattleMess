@@ -17,10 +17,8 @@ func _set_address():
 
 func _on_Host_pressed():
 	_set_address()
-	level_select_popup.popup_centered()
+	level_select_popup.popup_centered();
 	yield(level_select_popup, "hide");
-	team_select_popup.popup_centered()
-	yield(team_select_popup, "hide");
 	if $"/root/network".host_server() == OK:
 		get_tree().change_scene("res://ui/lobby.tscn"); #TODO: goto lobby
 	else:
@@ -29,19 +27,8 @@ func _on_Host_pressed():
 
 func _on_Join_pressed():
 	_set_address()
-	team_select_popup.popup_centered()
-	yield(team_select_popup, "hide");
-	if $"/root/network".join_server() == OK:
+	if $"/root/network".join_server() == OK: #TODO: ceck if connected
 		get_tree().change_scene("res://ui/lobby.tscn"); #TODO: goto lobby
 	else:
 		printerr("Could not connect to server with: ", globals.ip, ":", globals.port);
 
-
-func _on_Team1_pressed():
-	globals.team = "Team1";
-	team_select_popup.hide();
-
-
-func _on_Team2_pressed():
-	globals.team = "Team2";
-	team_select_popup.hide();

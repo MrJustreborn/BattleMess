@@ -58,6 +58,8 @@ func _player_connected(id): #when someone else connects, I will register the pla
 
 master func _set_player_data(player_name):
 	var origin = get_tree().get_rpc_sender_id();
+	if origin == 0 && get_tree().is_network_server():
+		origin = 1;
 	#register_player(origin, player_name);
 	if (origin in players):
 		players[origin] = player_name
@@ -67,7 +69,7 @@ remote func register_player(id):
 	print("Everyone sees this.. adding this id to your array! ", id) # everyone sees this
 	#the server will see this... better tell this guy who else is already in...
 	if !(id in players):
-		players[id] = {}
+		players[id] = globals.serialize();
 	
 	# Server sends the info of existing players back to the new player
 	if get_tree().is_network_server():
@@ -80,7 +82,7 @@ remote func register_player(id):
 		#	rpc_id(id, "register_player", peer_id, players[peer_id]) #rpc_id only targets player with specified ID
 		#rpc("update_player_list") # not needed, just double checks everyone on same page
 
-remote func _set_player_list(newList):
+remotesync func _set_player_list(newList):
 	players = newList;
 	print("Got new list: ", players.size())
 	emit_signal("updated_players", players)
