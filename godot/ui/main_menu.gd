@@ -35,3 +35,13 @@ func _on_Join_pressed():
 		get_tree().change_scene("res://ui/lobby.tscn"); #TODO: goto lobby
 	else:
 		printerr("Could not connect to server with: ", globals.ip, ":", globals.port);
+
+
+func _on_Team1_pressed():
+	globals.team = "Team1";
+	team_select_popup.hide();
+
+
+func _on_Team2_pressed():
+	globals.team = "Team2";
+	team_select_popup.hide();

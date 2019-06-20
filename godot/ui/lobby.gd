@@ -19,8 +19,10 @@ remotesync func _update_player_list():
 	team_2.clear();
 	var players = network.players;
 	for p in players:
-		team_1.add_item(str(players[p]), load("res://icon.png"), false);
-		team_2.add_item(str(players[p]), load("res://icon.png"), false);
+		if players[p]["team"] == "Team1":
+			team_1.add_item(str(players[p]["player_name"]), load("res://icon.png"), false);
+		else:
+			team_2.add_item(str(players[p]["player_name"]), load("res://icon.png"), false);
 
 func _get_timestamp():
 	var time = OS.get_time()
@@ -43,16 +45,20 @@ func _get_timestamp():
 	
 	return "[color=gray] (" + h +":"+ m +":"+ s + ") "
 
-remotesync func _append_chat(player_name, text):
-	chat.bbcode_text += "\n" + _get_timestamp() + "[color=red]" +player_name+ ":\n [color=white] " + text
+remotesync func _append_chat(team, player_name, text):
+	var color = "[color=red]";
+	if team == "Team2":
+		color = "[color=green]";
+	chat.bbcode_text += "\n" + _get_timestamp() + color +player_name+ ":\n [color=white] " + text
 
 master func _send_text(text):
 	var from = get_tree().get_rpc_sender_id();
 	if from == 0 && get_tree().is_network_server():
 		from = 1;
 	print("New chat message: ", text);
-	var pName = network.players[from]
-	rpc("_append_chat", pName, text);
+	var pName = network.players[from]["player_name"]
+	var team = network.players[from]["team"]
+	rpc("_append_chat", team, pName, text);
 
 func _on_Button_pressed():
 	rpc("_send_text", toSend.text);

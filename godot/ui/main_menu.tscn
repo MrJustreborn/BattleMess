@@ -189,14 +189,14 @@ anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="WindowDialog2/HBoxContainer"]
+[node name="Team1" type="Button" parent="WindowDialog2/HBoxContainer"]
 margin_right = 264.0
 margin_bottom = 254.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Team 1"
 
-[node name="Button2" type="Button" parent="WindowDialog2/HBoxContainer"]
+[node name="Team2" type="Button" parent="WindowDialog2/HBoxContainer"]
 margin_left = 268.0
 margin_right = 533.0
 margin_bottom = 254.0
@@ -205,3 +205,5 @@ size_flags_vertical = 3
 text = "Team 2"
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Host" to="." method="_on_Host_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Join" to="." method="_on_Join_pressed"]
+[connection signal="pressed" from="WindowDialog2/HBoxContainer/Team1" to="." method="_on_Team1_pressed"]
+[connection signal="pressed" from="WindowDialog2/HBoxContainer/Team2" to="." method="_on_Team2_pressed"]

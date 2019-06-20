@@ -39,7 +39,7 @@ func host_server() -> int:
 		get_tree().set_network_peer(peer)
 		#checks:
 		print("Hosting...This is my ID: ", str(get_tree().get_network_unique_id()))
-		players[1] = globals.player_name
+		players[1] = globals.serialize()
 	return err;
 
 func join_server():
@@ -56,7 +56,7 @@ func _player_connected(id): #when someone else connects, I will register the pla
 	#rpc("register_player", get_tree().get_network_unique_id())
 	register_player(id)
 
-master func _set_name(player_name):
+master func _set_player_data(player_name):
 	var origin = get_tree().get_rpc_sender_id();
 	#register_player(origin, player_name);
 	if (origin in players):
@@ -67,12 +67,12 @@ remote func register_player(id):
 	print("Everyone sees this.. adding this id to your array! ", id) # everyone sees this
 	#the server will see this... better tell this guy who else is already in...
 	if !(id in players):
-		players[id] = ""
+		players[id] = {}
 	
 	# Server sends the info of existing players back to the new player
 	if get_tree().is_network_server():
 		# Send my info to the new player
-		rpc_id(id, "register_player", 1, globals.player_name) #rpc_id only targets player with specified ID
+		rpc_id(id, "register_player", 1, globals.serialize()) #rpc_id only targets player with specified ID
 		
 		# Send the info of existing players to the new player from ther server's personal list
 		rpc("_set_player_list", players);
@@ -96,4 +96,4 @@ remote func _set_player_list(newList):
 
 func _connected_to_server_ok(): 	
 	print("(My eyes only)I connected to the server! This is my ID: ", str(get_tree().get_network_unique_id()))
-	rpc("_set_name", globals.player_name);
+	rpc("_set_player_data", globals.serialize());
