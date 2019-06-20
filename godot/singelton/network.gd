@@ -58,13 +58,16 @@ func _player_connected(id): #when someone else connects, I will register the pla
 
 master func _set_name(player_name):
 	var origin = get_tree().get_rpc_sender_id();
-	register_player(origin, player_name);
+	#register_player(origin, player_name);
+	if (origin in players):
+		players[origin] = player_name
+		rpc("_set_player_list", players);
 
-remote func register_player(id, player_name = ""): 
-	print("Everyone sees this.. adding this id to your array! ", id, "(",player_name,")") # everyone sees this
+remote func register_player(id): 
+	print("Everyone sees this.. adding this id to your array! ", id) # everyone sees this
 	#the server will see this... better tell this guy who else is already in...
-	#if !(id in players):
-	players[id] = player_name
+	if !(id in players):
+		players[id] = ""
 	
 	# Server sends the info of existing players back to the new player
 	if get_tree().is_network_server():
@@ -72,18 +75,25 @@ remote func register_player(id, player_name = ""):
 		rpc_id(id, "register_player", 1, globals.player_name) #rpc_id only targets player with specified ID
 		
 		# Send the info of existing players to the new player from ther server's personal list
-		for peer_id in players:
-			rpc_id(id, "register_player", peer_id, players[peer_id]) #rpc_id only targets player with specified ID
-		rpc("update_player_list") # not needed, just double checks everyone on same page
-	elif players[get_tree().get_network_unique_id()] != globals.player_name:
-		rpc("_set_name", globals.player_name);
+		rpc("_set_player_list", players);
+		#for peer_id in players:
+		#	rpc_id(id, "register_player", peer_id, players[peer_id]) #rpc_id only targets player with specified ID
+		#rpc("update_player_list") # not needed, just double checks everyone on same page
+
+remote func _set_player_list(newList):
+	players = newList;
+	print("Got new list: ", players.size())
+	emit_signal("updated_players", players)
+
+
 #Not needed, double check everyone on sme page
-remote func update_player_list():
-	for x in players:
-		print("Player: ", x, " -> ", players[x]);
-	emit_signal("updated_players", players) # todo: is this the right place?
+#remote func update_player_list():
+#	for x in players:
+#		print("Player: ", x, " -> ", players[x]);
+#	emit_signal("updated_players", players) # todo: is this the right place?
 
 
 
 func _connected_to_server_ok(): 	
 	print("(My eyes only)I connected to the server! This is my ID: ", str(get_tree().get_network_unique_id()))
+	rpc("_set_name", globals.player_name);
