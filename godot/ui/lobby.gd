@@ -4,9 +4,25 @@ onready var chat = $"VBoxContainer/Panel/VBoxContainer/RichTextLabel";
 onready var toSend = $"VBoxContainer/Panel/VBoxContainer/HBoxContainer/LineEdit"
 onready var network = $"/root/network"
 
+onready var team_1 = $VBoxContainer/HBoxContainer/Panel/ItemList
+onready var team_2 = $VBoxContainer/HBoxContainer/Panel2/ItemList
+
 func _ready():
+	get_tree().connect("network_peer_connected", self, "_player_connected")
 	pass
 
+func _player_connected(id):
+	yield(get_tree(), "idle_frame");
+	yield(get_tree(), "idle_frame");
+	rpc("_update_player_list")
+
+remotesync func _update_player_list():
+	team_1.clear();
+	team_2.clear();
+	var players = network.players;
+	for p in players:
+		team_1.add_item(str(players[p]), load("res://icon.png"), false);
+		team_2.add_item(str(players[p]), load("res://icon.png"), false);
 
 func _get_timestamp():
 	var time = OS.get_time()
