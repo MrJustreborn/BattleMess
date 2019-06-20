@@ -36,10 +36,12 @@ margin_bottom = 293.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Panel"]
-margin_right = 40.0
-margin_bottom = 14.0
-text = "Test"
+[node name="ItemList" type="ItemList" parent="VBoxContainer/HBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+items = [ "Element 0", ExtResource( 2 ), false ]
 
 [node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer"]
 margin_left = 509.0

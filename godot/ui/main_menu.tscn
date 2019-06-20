@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://ui/main_menu.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
 
 [node name="Main_Menu" type="Control"]
 anchor_right = 1.0
@@ -144,5 +145,36 @@ margin_right = 1004.0
 margin_bottom = 580.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="WindowDialog" type="WindowDialog" parent="."]
+margin_left = 188.175
+margin_top = 114.854
+margin_right = 791.175
+margin_bottom = 447.854
+window_title = "Select Level"
+resizable = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="WindowDialog/VBoxContainer"]
+margin_right = 603.0
+margin_bottom = 309.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+items = [ "Test Map (9v9)", ExtResource( 2 ), false ]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WindowDialog/VBoxContainer"]
+margin_top = 313.0
+margin_right = 603.0
+margin_bottom = 333.0
+
+[node name="Button" type="Button" parent="WindowDialog/VBoxContainer/HBoxContainer"]
+margin_right = 41.0
+margin_bottom = 20.0
+text = "Start"
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Host" to="." method="_on_Host_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Join" to="." method="_on_Join_pressed"]
