@@ -176,5 +176,32 @@ margin_bottom = 333.0
 margin_right = 41.0
 margin_bottom = 20.0
 text = "Start"
+
+[node name="WindowDialog2" type="WindowDialog" parent="."]
+margin_left = 20.0
+margin_top = 238.0
+margin_right = 553.0
+margin_bottom = 492.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WindowDialog2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="WindowDialog2/HBoxContainer"]
+margin_right = 264.0
+margin_bottom = 254.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Team 1"
+
+[node name="Button2" type="Button" parent="WindowDialog2/HBoxContainer"]
+margin_left = 268.0
+margin_right = 533.0
+margin_bottom = 254.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Team 2"
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Host" to="." method="_on_Host_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Join" to="." method="_on_Join_pressed"]

@@ -8,12 +8,10 @@ onready var team_1 = $VBoxContainer/HBoxContainer/Panel/ItemList
 onready var team_2 = $VBoxContainer/HBoxContainer/Panel2/ItemList
 
 func _ready():
-	get_tree().connect("network_peer_connected", self, "_player_connected")
-	pass
+	network.connect("updated_players", self, "_player_connected");
+	_update_player_list();
 
-func _player_connected(id):
-	yield(get_tree(), "idle_frame");
-	yield(get_tree(), "idle_frame");
+func _player_connected(newList):
 	rpc("_update_player_list")
 
 remotesync func _update_player_list():

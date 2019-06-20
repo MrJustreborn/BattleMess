@@ -5,6 +5,7 @@ onready var ip_label = get_node("VBoxContainer/HBoxContainer2/ip");
 onready var port = get_node("VBoxContainer/HBoxContainer2/port");
 onready var player_name = get_node("VBoxContainer/HBoxContainer3/name");
 onready var level_select_popup = $WindowDialog
+onready var team_select_popup = $WindowDialog2
 
 func _ready():
 	pass
@@ -18,6 +19,8 @@ func _on_Host_pressed():
 	_set_address()
 	level_select_popup.popup_centered()
 	yield(level_select_popup, "hide");
+	team_select_popup.popup_centered()
+	yield(team_select_popup, "hide");
 	if $"/root/network".host_server() == OK:
 		get_tree().change_scene("res://ui/lobby.tscn"); #TODO: goto lobby
 	else:
@@ -26,6 +29,8 @@ func _on_Host_pressed():
 
 func _on_Join_pressed():
 	_set_address()
+	team_select_popup.popup_centered()
+	yield(team_select_popup, "hide");
 	if $"/root/network".join_server() == OK:
 		get_tree().change_scene("res://ui/lobby.tscn"); #TODO: goto lobby
 	else:

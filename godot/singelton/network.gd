@@ -4,6 +4,8 @@ onready var globals = $"/root/globals";
 
 var players = {};
 
+signal updated_players(list)
+
 func _ready():
 	print("\n===\n")
 	var f = File.new()
@@ -79,6 +81,7 @@ remote func register_player(id, player_name = ""):
 remote func update_player_list():
 	for x in players:
 		print("Player: ", x, " -> ", players[x]);
+	emit_signal("updated_players", players) # todo: is this the right place?
 
 
 
