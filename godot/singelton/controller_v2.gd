@@ -17,16 +17,19 @@ var test_entity = preload("res://test/entities/testentity.tscn");
 
 var grid: Node = null;
 
+var readyClients = [];
+
 var is_init: bool = false;
 func _ready():
 	is_init = false;
-	get_tree().connect("network_peer_connected", self, "_player_connected")
+	#get_tree().connect("network_peer_connected", self, "_player_connected")
 	current_field = {}
 	future_field = {}
 	field_type = {}
 	pos_ref = {}
 	grid_size = Vector2(8, 8)
 	grid = null;
+	readyClients = [];
 
 func cell_to_world(cell: Vector2):
 	#print(cell, " -> ", pos_ref[cell].global_transform);
@@ -128,6 +131,16 @@ master func request_move(cell: Vector2) -> bool:
 			who.rpc_id(from, "_move_request_accepted", cell);
 	return can;
 
+master func _client_ready():
+	var origin = get_tree().get_rpc_sender_id();
+	print(origin, " is ready. ", network.players[origin]);
+	readyClients.append(origin)
+	var playerSize = network.players.size();
+	print(readyClients.size(), " of ", playerSize);
+	if readyClients.size() == playerSize - 1:
+		print("all ready!");
+		get_tree().change_scene("res://test/testlvl.tscn");
+
 func _get_future_cell_of(who: Node):
 	for n in future_field:
 		if !future_field[n].empty() && future_field[n][0] == who:
@@ -158,6 +171,30 @@ func _player_connected(id):
 				var cell = e.pos
 				entities[e].append(id)
 				rpc_id(id, "_set_player", cell);
+				break;
+		for e in entities:
+				rpc("_update_player_node_name", e.pos, e.name);
+
+func _set_players():
+	var players = network.players;
+	for p in players:
+		var team = players[p].team;
+		if team == "Team1":
+			team = "spawn[0]";
+		else:
+			team = "spawn[1]";
+		for e in entities:
+			if entities[e].empty() && e.team == team:
+				print(p, " ", e, " ", team, e.team, e.pos)
+				e.name = str(p);
+				var cell = e.pos
+				entities[e].append(p)
+				rpc_id(p, "_set_player", cell);
+				if p == 1 && get_tree().is_network_server():
+					var t = e.team;
+					e.set_script(user_ctrl);
+					e.name = str(1);
+					e.init(self, cell, t);
 				break;
 		for e in entities:
 				rpc("_update_player_node_name", e.pos, e.name);
@@ -202,14 +239,14 @@ func init_grid(grid: Node, entities: Node):
 				e.name = "Bot " + str(x) + str(y);
 				entities.add_child(e);
 				self.entities[e] = [];
-				if Vector2(x,y) == Vector2(10,15) && get_tree().is_network_server():
-					e.set_script(user_ctrl)
-					e.name = "1"
-					self.entities[e].append(0);
-					self.entities[e].append(get_tree().get_network_unique_id());
-					print("HERE");
+				#if Vector2(x,y) == Vector2(10,15) && get_tree().is_network_server():
+				#	e.set_script(user_ctrl)
+				#	e.name = "1"
+				#	self.entities[e].append(0);
+				#	self.entities[e].append(get_tree().get_network_unique_id());
+				#	print("HERE");
 				teams[cell.name.left(8)] = true;
-				e.init(self, Vector2(x,y), cell.name.left(8));
+				e.init(self, Vector2(x,y), cell.name.left(8)); # TODO: define teams correctly
 				current_field[Vector2(x,y)].append(e);
 				future_field[Vector2(x,y)].append(e);
 				field_type[Vector2(x,y)] = "spawn";
@@ -230,6 +267,11 @@ func init_grid(grid: Node, entities: Node):
 		if !current_field[c].empty():
 			current_field[c][0].start();
 	_pretty_print();
+	if !get_tree().is_network_server():
+		rpc("_client_ready");
+	else:
+		print("set players")
+		_set_players();
 
 func _pretty_print(what = "Current", field = current_field):
 	#print("[TYPE][NUMBER_PLAYER][AI/REAL = a/r]")

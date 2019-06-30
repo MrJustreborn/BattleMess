@@ -155,4 +155,5 @@ shortcut = SubResource( 2 )
 text = "Send"
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Panel/VBoxContainer/Join1" to="." method="_on_Join1_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Panel2/VBoxContainer/Join2" to="." method="_on_Join2_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Panel/VBoxContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]

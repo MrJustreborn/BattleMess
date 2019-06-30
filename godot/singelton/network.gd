@@ -74,7 +74,7 @@ remote func register_player(id):
 	# Server sends the info of existing players back to the new player
 	if get_tree().is_network_server():
 		# Send my info to the new player
-		rpc_id(id, "register_player", 1, globals.serialize()) #rpc_id only targets player with specified ID
+		rpc_id(id, "register_player", globals.serialize()) #rpc_id only targets player with specified ID
 		
 		# Send the info of existing players to the new player from ther server's personal list
 		rpc("_set_player_list", players);

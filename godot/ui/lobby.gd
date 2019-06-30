@@ -20,7 +20,7 @@ var max_players_per_team = 9; #testmap
 func _ready():
 	network.connect("updated_players", self, "_player_connected");
 	_update_player_list();
-	_update_labels();
+	_update_labels(teams);
 	if get_tree().is_network_server():
 		$VBoxContainer/HBoxContainer2.show();
 
@@ -97,7 +97,7 @@ master func _request_join(which):
 		else:
 			rpc_id(origin, "_change_team", which);
 		
-		_update_labels();
+		rpc("_update_labels", teams)
 
 remote func _change_team(team):
 	print(team)
@@ -109,7 +109,8 @@ remote func _change_team(team):
 		globals.team = "";
 	network.rpc("_set_player_data", globals.serialize());
 
-func _update_labels():
+remotesync func _update_labels(all):
+	teams = all;
 	team_1_label.text = "Team 1 (" + str(teams[1].size()) + " / " + str(max_players_per_team) + ")"
 	team_2_label.text = "Team 2 (" + str(teams[2].size()) + " / " + str(max_players_per_team) + ")"
 
@@ -118,3 +119,11 @@ func _on_Join1_pressed():
 
 func _on_Join2_pressed():
 	rpc("_request_join", 2);
+
+puppet func _start_game():
+	print("Start Game ...");
+	get_tree().change_scene("res://test/testlvl.tscn");
+
+func _on_Start_pressed():
+	if get_tree().is_network_server():
+		rpc("_start_game");
