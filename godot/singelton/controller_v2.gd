@@ -111,6 +111,8 @@ func get_ref(id):
 
 master func request_move(cell: Vector2) -> bool:
 	var from = get_tree().get_rpc_sender_id();
+	if from == 0 && get_tree().is_network_server():
+		from = 1;
 	var who = get_ref(from);
 	lock.lock();
 	print("request_move: ", cell, " ", who, " can_move:", can_move(cell));#, " merge:", can_merge(who, cell), " kill:", can_kill(who, cell));
@@ -245,7 +247,7 @@ func init_grid(grid: Node, entities: Node):
 				#	self.entities[e].append(0);
 				#	self.entities[e].append(get_tree().get_network_unique_id());
 				#	print("HERE");
-				teams[cell.name.left(8)] = true;
+				teams[cell.name.left(8)] = false;
 				e.init(self, Vector2(x,y), cell.name.left(8)); # TODO: define teams correctly
 				current_field[Vector2(x,y)].append(e);
 				future_field[Vector2(x,y)].append(e);
