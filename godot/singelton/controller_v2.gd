@@ -150,7 +150,7 @@ func _get_future_cell_of(who: Node):
 
 func _input(event):
 	if is_init && get_tree().is_network_server() && Input.is_action_just_pressed("ui_cancel"):
-		get_tree().call_group('spawn[1]', 'add_to_group', 'active') #TODO: should rpc
+		get_tree().call_group('spawn[1]', 'set_active', true) #TODO: should rpc
 		print("end turn");
 		_end_turn();
 		print(teams)

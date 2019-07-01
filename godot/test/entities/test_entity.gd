@@ -153,6 +153,18 @@ func _show_moves(visible = true):
 			pass
 		$overlay/moves.visible = false;
 
+puppet func set_active(isActive):
+	var origin = get_tree().get_rpc_sender_id();
+	if get_tree().is_network_server() || origin == 1:
+		print(team, " Set active to: ", isActive)
+		if isActive:
+			add_to_group('active');
+		else:
+			remove_from_group('active');
+	if get_tree().is_network_server():
+		rpc('set_active', isActive);
+	# nothing
+
 func _on_move_mouse_clicked(what, where):
 	print(what, " ", where)
 
