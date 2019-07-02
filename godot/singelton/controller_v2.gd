@@ -119,7 +119,9 @@ master func request_move(cell: Vector2) -> bool:
 	var can = can_move(cell);
 	if can:
 		var curWhere = _get_future_cell_of(who);
-		future_field[curWhere] = [];
+		var where = future_field[curWhere].find(who);
+		if where > -1:
+			future_field[curWhere].remove(where);
 		future_field[cell].append(who);
 	else:
 		can = cell == _get_future_cell_of(who);
