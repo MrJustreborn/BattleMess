@@ -129,10 +129,11 @@ master func request_move(cell: Vector2) -> bool:
 	_pretty_print("Future", future_field);
 	if can:
 		print("send rpc to: ", from)
-		if from == 0 || from == 1:
-			who._move_request_accepted(cell);
-		else:
-			who.rpc_id(from, "_move_request_accepted", cell);
+		#if from == 0 || from == 1:
+		#	who._move_request_accepted(cell);
+		#else:
+		#	who.rpc_id(from, "_move_request_accepted", cell);
+		who.rpc("_move_request_accepted", cell);
 	return can;
 
 master func _client_ready():

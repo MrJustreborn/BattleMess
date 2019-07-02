@@ -73,6 +73,8 @@ remotesync func update_pos(newpos): #todo: use setget
 		_pos_updated(null, null);
 
 func _pos_updated(obj, key):
+	for c in $move_preview.get_children():
+		c.queue_free();
 	start();
 
 var jumpCurve = Curve3D.new()
@@ -168,8 +170,11 @@ puppet func set_active(isActive):
 func _on_move_mouse_clicked(what, where):
 	print(what, " ", where)
 
-#func _on_StaticBody_mouse_entered():
-#	_show_moves(true);
+remotesync func _move_request_accepted(where):
+	for c in $move_preview.get_children():
+		c.queue_free();
+	var m = $piece.duplicate();
+	$move_preview.add_child(m);
+	m.material_override = preload("res://test/entities/shadow_mat.tres");
+	m.global_transform = grid_crtl.cell_to_world(where);
 
-#func _on_StaticBody_mouse_exited():
-#	_show_moves(false);
