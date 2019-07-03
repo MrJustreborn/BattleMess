@@ -1,0 +1,45 @@
+{
+	"id": "pawn_v2",
+	"name": "Bauer MK2",
+	"level": 2,
+	"mesh": "res://plugins/entities/pawn_mesh_v.tres",
+	"texture": null,
+	"movementset": {
+		"first_move": {
+			"discrete": [],
+			"continuous": []
+		},
+		"move": {
+			"discrete": [
+						{"x":0, "y":-1},
+						{"x":0, "y":1},
+						{"x":-1, "y":0},
+						{"x":1, "y":0},
+						{"x":1, "y":1},
+						{"x":1, "y":-1},
+						{"x":-1, "y":1},
+						{"x":-1, "y":-1}
+						],
+			"continuous": []
+		},
+		"merge": {
+			"discrete": [
+						{"x":0, "y":-1},
+						{"x":0, "y":1},
+						{"x":-1, "y":0},
+						{"x":1, "y":0},
+						{"x":1, "y":1},
+						{"x":1, "y":-1},
+						{"x":-1, "y":1},
+						{"x":-1, "y":-1}
+						],
+			"continuous": []
+		},
+		"kill": {
+			"discrete": [],
+			"continuous": [],
+			"move_on_discete": true,
+			"move_on_continuous": true
+		}
+	}
+}
