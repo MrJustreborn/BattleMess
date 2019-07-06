@@ -153,13 +153,34 @@ func _get_future_cell_of(who: Node):
 
 func _input(event):
 	if is_init && get_tree().is_network_server() && Input.is_action_just_pressed("ui_cancel"):
-		get_tree().call_group('spawn[1]', 'set_active', true) #TODO: should rpc
+		_change_teams();
+		for t in teams:
+			get_tree().call_group(t, 'set_active', teams[t]) #TODO: should rpc
 		for i in range(250):
 			yield(get_tree(), "idle_frame"); # wait to set group
 		print("end turn");
 		#yield(self, "all_changed");
 		_end_turn();
 		print(teams)
+
+func _change_teams():
+	var firstStart = false;
+	for t in teams:
+		if teams[t] == false:
+			firstStart = true;
+		else:
+			firstStart = false;
+			break;
+	if firstStart:
+		teams['spawn[0]'] = true;
+		return;
+	#TODO: support more then two teams
+	if teams['spawn[0]']:
+		teams['spawn[0]'] = false;
+		teams['spawn[1]'] = true;
+	else:
+		teams['spawn[0]'] = true;
+		teams['spawn[1]'] = false;
 
 # TODO: fix this mess
 var remoteActive = {};

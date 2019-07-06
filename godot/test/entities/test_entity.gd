@@ -50,6 +50,8 @@ func start():
 	_show_moves(false);
 
 remotesync func update_pos(newpos): #todo: use setget
+	for c in $move_preview.get_children():
+		c.queue_free();
 	_show_moves(false);
 	if newpos != pos:
 		pos = newpos;
@@ -73,8 +75,6 @@ remotesync func update_pos(newpos): #todo: use setget
 		_pos_updated(null, null);
 
 func _pos_updated(obj, key):
-	for c in $move_preview.get_children():
-		c.queue_free();
 	start();
 
 var jumpCurve = Curve3D.new()
@@ -165,7 +165,7 @@ puppet func set_active(isActive):
 		print(team, " Set active to: ", isActive)
 		if isActive:
 			add_to_group('active');
-		else:
+		elif is_in_group('active'):
 			remove_from_group('active');
 	if get_tree().is_network_server():
 		rpc('set_active', isActive);
