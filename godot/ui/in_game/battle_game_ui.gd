@@ -10,7 +10,7 @@ onready var timer = $Control/VBoxContainer/HBoxContainer/TextureProgress/Timer;
 
 func _ready():
 	timer.start();
-	#$Control.visible = false;
+	$Control.visible = false;
 	pass
 
 func _process(delta):

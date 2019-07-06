@@ -1,6 +1,7 @@
 extends "res://test/entities/test_entity.gd"
 
 func start():
+	print("Got start call. ", is_in_group("active"));
 	.start();
 	_show_moves(true)
 	for c in $move_preview.get_children():

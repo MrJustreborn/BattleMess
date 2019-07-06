@@ -154,9 +154,33 @@ func _get_future_cell_of(who: Node):
 func _input(event):
 	if is_init && get_tree().is_network_server() && Input.is_action_just_pressed("ui_cancel"):
 		get_tree().call_group('spawn[1]', 'set_active', true) #TODO: should rpc
+		for i in range(250):
+			yield(get_tree(), "idle_frame"); # wait to set group
 		print("end turn");
+		#yield(self, "all_changed");
 		_end_turn();
 		print(teams)
+
+# TODO: fix this mess
+var remoteActive = {};
+signal all_changed;
+master func player_state_changed(active: int):
+	var origin = get_tree().get_rpc_sender_id();
+	
+	print("Remote active changed: ", origin, " -> ", active);
+	var localActive = get_tree().get_nodes_in_group('active');
+	remoteActive[origin] = active;
+	
+	for a in remoteActive:
+		var ok = false;
+		if remoteActive[a] == localActive.size():
+			ok = true;
+		else:
+			break;
+		if ok:
+			print("All remote active changed");
+			emit_signal("all_changed");
+			remoteActive = {};
 
 func _end_turn():
 	for c in future_field:

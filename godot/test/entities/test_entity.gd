@@ -94,6 +94,7 @@ master func _get_moves_remote():
 	for m in movementset.move.discrete:
 		if grid_crtl.can_move(pos + m):
 			can_move.append(pos + m);
+	print("(",from,") got ", can_move.size(), " moves");
 	if from == 0 and get_tree().is_network_server():
 		_set_moves_remote(can_move);
 	else:
@@ -101,7 +102,10 @@ master func _get_moves_remote():
 
 func _get_moves() -> Array:
 	rpc("_get_moves_remote");
-	yield(self,"got_moves")
+	if get_tree().is_network_server():
+		yield(get_tree(), "idle_frame");
+	else:
+		yield(self,"got_moves")
 	return cur_moves;
 func _get_merges() -> Array:
 	var can_merge = [];
@@ -165,7 +169,9 @@ puppet func set_active(isActive):
 			remove_from_group('active');
 	if get_tree().is_network_server():
 		rpc('set_active', isActive);
-	# nothing
+#	yield(get_tree(), "idle_frame");
+#	var localActive = get_tree().get_nodes_in_group('active');
+#	grid_crtl.rpc("player_state_changed", localActive.size());
 
 func _on_move_mouse_clicked(what, where):
 	print(what, " ", where)
