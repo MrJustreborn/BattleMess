@@ -81,6 +81,9 @@ var jumpCurve = Curve3D.new()
 func _jump(pos: float):
 	global_transform.origin = jumpCurve.interpolate_baked(pos);
 
+# # # # #
+# Moves
+# # # # #
 var cur_moves;
 signal got_moves
 puppet func _set_moves_remote(moves: Array):
@@ -100,6 +103,50 @@ master func _get_moves_remote():
 	else:
 		rpc_id(from, "_set_moves_remote", can_move);
 
+# # # # #
+# Merges
+# # # # #
+var cur_merges;
+signal got_merges
+puppet func _set_merges_remote(merges: Array):
+	cur_merges = merges;
+	emit_signal("got_merges");
+
+master func _get_merges_remote():
+	var from = get_tree().get_rpc_sender_id();
+	print("get merges remote: ", from)
+	var can_merge = [];
+	for m in movementset.merge.discrete:
+		if grid_crtl.can_merge(self, pos + m):
+			can_merge.append(pos + m);
+	print("(",from,") got ", can_merge.size(), " merges");
+	if from == 0 and get_tree().is_network_server():
+		_set_merges_remote(can_merge);
+	else:
+		rpc_id(from, "_set_merges_remote", can_merge);
+
+# # # # #
+# Kills
+# # # # #
+var cur_kills;
+signal got_kills
+puppet func _set_kills_remote(kills: Array):
+	cur_kills = kills;
+	emit_signal("got_kills");
+
+master func _get_kills_remote():
+	var from = get_tree().get_rpc_sender_id();
+	print("get kills remote: ", from)
+	var can_kill = [];
+	for m in movementset.kill.discrete:
+		if grid_crtl.can_kill(self, pos + m):
+			can_kill.append(pos + m);
+	print("(",from,") got ", can_kill.size(), " kills");
+	if from == 0 and get_tree().is_network_server():
+		_set_kills_remote(can_kill);
+	else:
+		rpc_id(from, "_set_kills_remote", can_kill);
+
 func _get_moves() -> Array:
 	rpc("_get_moves_remote");
 	if get_tree().is_network_server():
@@ -108,17 +155,19 @@ func _get_moves() -> Array:
 		yield(self,"got_moves")
 	return cur_moves;
 func _get_merges() -> Array:
-	var can_merge = [];
-	for m in movementset.merge.discrete:
-		if grid_crtl.can_merge(self, pos + m):
-			can_merge.append(pos + m);
-	return can_merge;
+	rpc("_get_merges_remote");
+	if get_tree().is_network_server():
+		yield(get_tree(), "idle_frame");
+	else:
+		yield(self,"got_merges")
+	return cur_merges;
 func _get_kills() -> Array:
-	var can_kill = [];
-	for m in movementset.kill.discrete:
-		if grid_crtl.can_kill(self, pos + m):
-			can_kill.append(pos + m);
-	return can_kill;
+	rpc("_get_kills_remote");
+	if get_tree().is_network_server():
+		yield(get_tree(), "idle_frame");
+	else:
+		yield(self,"got_kills")
+	return cur_kills;
 
 func _show_moves(visible = true):
 	if visible && is_in_group('active'):

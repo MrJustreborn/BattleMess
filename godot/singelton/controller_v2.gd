@@ -35,19 +35,19 @@ func cell_to_world(cell: Vector2):
 	#print(cell, " -> ", pos_ref[cell].global_transform);
 	return pos_ref[cell].global_transform
 
-master func test_FUNC():
-	var from = get_tree().get_rpc_sender_id();
-	print("CALLED TEST_FUNC: ", from, " ",get_tree().get_network_unique_id())
-	if from == 0 and get_tree().is_network_server():
-		for e in entities:
-			if entities[e].has(from):
-				print("call local")
-				e.set_moves(["test from master"]);
-	else:
-		for e in entities:
-			if entities[e].has(from):
-				print("WRONG CALL, MUST BE MASTER!!")
-				#e.rpc_id(from, "set_moves", "test from master");
+#master func test_FUNC():
+#	var from = get_tree().get_rpc_sender_id();
+#	print("CALLED TEST_FUNC: ", from, " ",get_tree().get_network_unique_id())
+#	if from == 0 and get_tree().is_network_server():
+#		for e in entities:
+#			if entities[e].has(from):
+#				print("call local")
+#				e.set_moves(["test from master"]);
+#	else:
+#		for e in entities:
+#			if entities[e].has(from):
+#				print("WRONG CALL, MUST BE MASTER!!")
+#				#e.rpc_id(from, "set_moves", "test from master");
 
 func can_move(cell: Vector2) -> bool:
 	#print(cell, " -> ", field_type[cell], " -> ", current_field[cell]);

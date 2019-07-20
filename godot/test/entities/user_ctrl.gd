@@ -21,6 +21,12 @@ func _on_move_mouse_clicked(what, where):
 	if what == "move":
 		grid_crtl.rpc("request_move", where)
 		return;
+	elif what == "merge":
+		grid_crtl.rpc("request_merge", where)
+		return;
+	elif what == "kill":
+		grid_crtl.rpc("request_kill", where)
+		return;
 	#var m = $Cone.duplicate();
 	#$move_preview.add_child(m);
 	#m.material_override = preload("res://test/entities/shadow_mat.tres");
