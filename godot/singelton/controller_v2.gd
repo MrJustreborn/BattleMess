@@ -149,6 +149,8 @@ master func request_kill(cell: Vector2) -> bool:
 		var where = future_field[curWhere].find(who);
 		if where > -1:
 			future_field[curWhere].remove(where);
+		for i in future_field[curWhere]:
+			print("Kill: ", i);
 		future_field[cell].append(who);
 	else:
 		can = cell == _get_future_cell_of(who);
@@ -175,7 +177,7 @@ master func _client_ready():
 
 func _get_future_cell_of(who: Node):
 	for n in future_field:
-		if !future_field[n].empty() && future_field[n][0] == who:
+		if !future_field[n].empty() && future_field[n][0] == who: #TODO: check all positions
 			return n;
 
 func _input(event):
