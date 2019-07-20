@@ -136,6 +136,33 @@ master func request_move(cell: Vector2) -> bool:
 		who.rpc("_move_request_accepted", cell);
 	return can;
 
+master func request_kill(cell: Vector2) -> bool:
+	var from = get_tree().get_rpc_sender_id();
+	if from == 0 && get_tree().is_network_server():
+		from = 1;
+	var who = get_ref(from);
+	lock.lock();
+	print("request_kill: ", cell, " ", who, " can_kill:", can_kill(who, cell));#, " merge:", can_merge(who, cell), " kill:", can_kill(who, cell));
+	var can = can_kill(who, cell);
+	if can:
+		var curWhere = _get_future_cell_of(who);
+		var where = future_field[curWhere].find(who);
+		if where > -1:
+			future_field[curWhere].remove(where);
+		future_field[cell].append(who);
+	else:
+		can = cell == _get_future_cell_of(who);
+	lock.unlock();
+	_pretty_print("Future", future_field);
+	if can:
+		print("send rpc to: ", from)
+		#if from == 0 || from == 1:
+		#	who._move_request_accepted(cell);
+		#else:
+		#	who.rpc_id(from, "_move_request_accepted", cell);
+		who.rpc("_kill_request_accepted", cell);
+	return can;
+
 master func _client_ready():
 	var origin = get_tree().get_rpc_sender_id();
 	print(origin, " is ready. ", network.players[origin]);

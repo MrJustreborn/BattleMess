@@ -28,6 +28,9 @@ var grid_crtl = null
 var pos = Vector2();
 var team = null;
 
+var MAT1 = SpatialMaterial.new();
+var MAT2 = SpatialMaterial.new();
+
 func _ready():
 	print("Ready: ",team);
 	#print("Network: ", get_tree().is_network_server());
@@ -44,6 +47,14 @@ func init(ctrl, cell, team, piece = "pawn"):
 		start();
 	$piece.mesh = get_node("/root/piece_loader").get_mesh(piece);
 	movementset = get_node("/root/piece_loader").get_movementset(piece);
+	
+	print("INIT", team, self.team == "spawn[1]");
+	if self.team == "spawn[1]":
+		$piece.mesh.surface_set_material(0, MAT1);
+		MAT1.albedo_color = Color("#ffffff");
+	else:
+		$piece.mesh.surface_set_material(0, MAT2);
+		MAT2.albedo_color = Color("#000000");
 
 func start():
 	global_transform = grid_crtl.cell_to_world(pos);
@@ -226,6 +237,11 @@ func _on_move_mouse_clicked(what, where):
 	print(what, " ", where)
 
 remotesync func _move_request_accepted(where):
+	_show_accepted_request(where)
+remotesync func _kill_request_accepted(where):
+	_show_accepted_request(where)
+
+func _show_accepted_request(where):
 	for c in $move_preview.get_children():
 		c.queue_free();
 	var m = $piece.duplicate();
