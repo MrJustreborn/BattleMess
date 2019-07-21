@@ -48,11 +48,13 @@ func init(ctrl, cell, team, piece = "pawn"):
 	if is_inside_tree():
 		#print("REINIT_ENTITY!");
 		start();
+	setMesh(piece);
+
+puppet func setMesh(piece):
 	$piece.mesh = get_node("/root/piece_loader").get_mesh(piece);
 	movementset = get_node("/root/piece_loader").get_movementset(piece);
 	
-	print("INIT", team, self.team == "spawn[1]");
-	if self.team == "spawn[1]":
+	if self.team == "spawn[0]":
 		$piece.mesh.surface_set_material(0, MAT1);
 		MAT1.albedo_color = Color("#ffffff");
 	else:
@@ -92,6 +94,11 @@ func _pos_updated(obj, key):
 	if kill_node:
 		kill_node.rpc("remove_entity");
 		kill_node = null;
+	if merge_with:
+		if get_tree().is_network_server():
+			setMesh("pawn_v2");
+			rpc("setMesh", "pawn_v2");
+		merge_with = null;
 	start();
 
 var jumpCurve = Curve3D.new()
@@ -251,6 +258,8 @@ func _on_move_mouse_clicked(what, where):
 remotesync func _move_request_accepted(where):
 	_show_accepted_request(where)
 remotesync func _kill_request_accepted(where):
+	_show_accepted_request(where)
+remotesync func _merge_request_accepted(where):
 	_show_accepted_request(where)
 
 func _show_accepted_request(where):

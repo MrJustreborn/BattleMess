@@ -60,7 +60,7 @@ func can_kill(who: Node, cell: Vector2) -> bool:
 func _can_move_current(cell: Vector2) -> bool:
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
-	return current_field[cell].empty() && (field_type[cell] == "move" || field_type[cell] == "move"); #spawn ? 
+	return current_field[cell].empty() && (field_type[cell] == "move" || field_type[cell] == "move" || field_type[cell] == "spawn"); #spawn ? 
 func _can_merge_current(who: Node, cell: Vector2) -> bool:
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
@@ -73,7 +73,7 @@ func _can_move_future(cell: Vector2) -> bool:
 	lock.lock();
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
-	var can = future_field[cell].empty() && (field_type[cell] == "move" || field_type[cell] == "move"); #spawn ? 
+	var can = future_field[cell].empty() && (field_type[cell] == "move" || field_type[cell] == "move" || field_type[cell] == "spawn"); #spawn ? 
 	lock.unlock();
 	return can;
 func _can_merge_future(who: Node, cell: Vector2) -> bool:
@@ -109,6 +109,9 @@ func get_ref(id):
 			print(n, " -> ", n.name);
 			return n;
 
+# # # # #
+# Moves
+# # # # #
 master func request_move(cell: Vector2) -> bool:
 	var from = get_tree().get_rpc_sender_id();
 	if from == 0 && get_tree().is_network_server():
@@ -136,6 +139,9 @@ master func request_move(cell: Vector2) -> bool:
 		who.rpc("_move_request_accepted", cell);
 	return can;
 
+# # # # #
+# Kills
+# # # # #
 master func request_kill(cell: Vector2) -> bool:
 	var from = get_tree().get_rpc_sender_id();
 	if from == 0 && get_tree().is_network_server():
@@ -158,11 +164,35 @@ master func request_kill(cell: Vector2) -> bool:
 	_pretty_print("Future", future_field);
 	if can:
 		print("send rpc to: ", from)
-		#if from == 0 || from == 1:
-		#	who._move_request_accepted(cell);
-		#else:
-		#	who.rpc_id(from, "_move_request_accepted", cell);
 		who.rpc("_kill_request_accepted", cell);
+	return can;
+
+# # # # #
+# Merges
+# # # # #
+master func request_merge(cell: Vector2) -> bool:
+	var from = get_tree().get_rpc_sender_id();
+	if from == 0 && get_tree().is_network_server():
+		from = 1;
+	var who = get_ref(from);
+	lock.lock();
+	print("request_merge: ", cell, " ", who, " can_kill:", can_merge(who, cell));#, " merge:", can_merge(who, cell), " kill:", can_kill(who, cell));
+	var can = can_merge(who, cell);
+	if can:
+		var curWhere = _get_future_cell_of(who);
+		var where = future_field[curWhere].find(who);
+		if where > -1:
+			future_field[curWhere].remove(where);
+		for i in future_field[curWhere]:
+			print("Merge: ", i);
+		future_field[cell].append(who);
+	else:
+		can = cell == _get_future_cell_of(who);
+	lock.unlock();
+	_pretty_print("Future", future_field);
+	if can:
+		print("send rpc to: ", from)
+		who.rpc("_merge_request_accepted", cell);
 	return can;
 
 master func _client_ready():

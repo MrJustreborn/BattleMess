@@ -25,15 +25,23 @@ var test_movementset: Dictionary = {
 var db = {}
 
 func _ready():
-	var f = File.new();
-	f.open("res://plugins/entities/pawn.json", File.READ);
-	var result = JSON.parse(f.get_as_text()).result;
-	f.close();
-	_load(result);
+	var d = Directory.new();
+	d.open("res://plugins/entities/");
+	d.list_dir_begin(true, true);
+	var next = d.get_next();
+	while next != "":
+		if !d.current_is_dir() && next.ends_with(".json"):
+			print("Load piece: ", "res://plugins/entities/" + next);
+			var f = File.new();
+			f.open("res://plugins/entities/" + next, File.READ);
+			var result = JSON.parse(f.get_as_text()).result;
+			f.close();
+			_load(result);
+		next = d.get_next();
 
 func _load(what: Dictionary):
 	var mesh
-	var movementset = test_movementset.duplicate();
+	var movementset = test_movementset.duplicate(true);
 	mesh = load(what.mesh);
 	
 	for pos in what.movementset.first_move.discrete:
@@ -63,7 +71,7 @@ func _load(what: Dictionary):
 	db[what.id]["name"] = what.name
 	db[what.id]["level"] = what.level
 	db[what.id]["mesh"] = mesh.duplicate();
-	db[what.id]["movementset"] = movementset.duplicate();
+	db[what.id]["movementset"] = movementset.duplicate(true);
 
 func get_mesh(what: String):
 	#print("load piece: ", what)
