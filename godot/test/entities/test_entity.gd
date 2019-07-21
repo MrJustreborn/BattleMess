@@ -31,6 +31,9 @@ var team = null;
 var MAT1 = SpatialMaterial.new();
 var MAT2 = SpatialMaterial.new();
 
+var merge_with: Node = null;
+var kill_node: Node = null;
+
 func _ready():
 	print("Ready: ",team);
 	#print("Network: ", get_tree().is_network_server());
@@ -86,11 +89,20 @@ remotesync func update_pos(newpos): #todo: use setget
 		_pos_updated(null, null);
 
 func _pos_updated(obj, key):
+	if kill_node:
+		kill_node.rpc("remove_entity");
+		kill_node = null;
 	start();
 
 var jumpCurve = Curve3D.new()
 func _jump(pos: float):
 	global_transform.origin = jumpCurve.interpolate_baked(pos);
+
+remotesync func remove_entity(kill = true):
+	var from = get_tree().get_rpc_sender_id();
+	if from == 0 || from == 1:
+		queue_free();
+		print("remove entity")
 
 # # # # #
 # Moves

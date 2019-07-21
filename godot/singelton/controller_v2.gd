@@ -237,6 +237,13 @@ func _end_turn():
 		current_field[c] = future_field[c].duplicate();
 	for c in current_field:
 		if !current_field[c].empty():
+			if current_field[c].size() > 1:
+				if current_field[c][0].team != current_field[c][1].team:
+					current_field[c][1].kill_node = current_field[c][0];
+				else:
+					current_field[c][1].merge_with = current_field[c][0];
+				current_field[c].remove(0);
+				future_field[c].remove(0);
 			for n in current_field[c]:
 				n.rpc("update_pos", c);
 	_pretty_print();
