@@ -80,14 +80,14 @@ func _can_merge_future(who: Node, cell: Vector2) -> bool:
 	lock.lock();
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
-	var can = !future_field[cell].empty() && future_field[cell][0].team == who.team && future_field[cell][0] == current_field[cell][0];
+	var can = !future_field[cell].empty() && future_field[cell][0].team == who.team && future_field[cell][0] == current_field[cell][0] && future_field[cell].size() < 2;
 	lock.unlock();
 	return can;
 func _can_kill_future(who: Node, cell: Vector2) -> bool:
 	lock.lock();
 	if cell.x < 0 || cell.y < 0 || cell.x > grid_size.x - 1 || cell.y > grid_size.y - 1:
 		return false;
-	var can = !future_field[cell].empty() && future_field[cell][0].team != who.team && future_field[cell][0] == current_field[cell][0];
+	var can = !future_field[cell].empty() && future_field[cell][0].team != who.team && future_field[cell][0] == current_field[cell][0] && future_field[cell].size() < 2;
 	lock.unlock();
 	return can;
 
@@ -177,7 +177,7 @@ master func _client_ready():
 
 func _get_future_cell_of(who: Node):
 	for n in future_field:
-		if !future_field[n].empty() && future_field[n][0] == who: #TODO: check all positions
+		if !future_field[n].empty() && future_field[n].find(who) > -1: #TODO: check all positions
 			return n;
 
 func _input(event):
@@ -364,11 +364,20 @@ func _pretty_print(what = "Current", field = current_field):
 		var t = "";
 		for x in range(grid_size.x):
 			if field[Vector2(x,y)].size() > 0:
-				t += " " + str(field[Vector2(x,y)].size()) + " ";
+				t += " " + str(field[Vector2(x,y)].size()) + _get_field_type_char_kill_merge(field, Vector2(x,y));
 			else:
 				t += " " +_get_field_type_char(field_type[Vector2(x,y)])+ " ";
 		print("= " + t + " =")
 	print(header)
+
+func _get_field_type_char_kill_merge(field, pos: Vector2):
+	if field[pos].size() > 1:
+		if field[pos][0].team != field[pos][1].team:
+			return "k";
+		else:
+			return "m";
+	else:
+		return " ";
 
 func _get_field_type_char(type: String):
 	match type:
