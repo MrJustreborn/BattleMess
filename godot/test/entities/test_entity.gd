@@ -79,7 +79,7 @@ remotesync func update_pos(newpos): #todo: use setget
 		jumpCurve.add_point(origin);
 		jumpCurve.add_point(heighPoint)#, Vector3(0, 0, 1), Vector3(0, 0, -1)); #todo calc controll points
 		jumpCurve.add_point(newOrigin);
-		$Tween.interpolate_method(self, "_jump", 0.0, jumpCurve.get_baked_length(), jumpCurve.get_baked_length()/5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		$Tween.interpolate_method(self, "_jump", 0.0, jumpCurve.get_baked_length(), 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		$Tween.connect("tween_completed", self, "_pos_updated", [], CONNECT_ONESHOT);
 		$Tween.start()
 	else:
