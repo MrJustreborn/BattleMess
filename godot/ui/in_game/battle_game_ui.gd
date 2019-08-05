@@ -4,14 +4,14 @@ const MAX_TIME = 55;
 
 onready var ctrl = $"/root/controller";
 
-onready var progress = $Control/VBoxContainer/HBoxContainer/TextureProgress;
-onready var timer = $Control/VBoxContainer/HBoxContainer/TextureProgress/Timer;
-onready var text = $Control/VBoxContainer/Label;
+onready var progress = $Control2/TextureProgress;
+onready var timer = $Control2/TextureProgress/Timer;
+onready var text = $Control/Label;
 
 
 func _ready():
 	timer.start();
-	$Control.visible = false;
+	#$Control.visible = false;
 	pass
 
 func _process(delta):
