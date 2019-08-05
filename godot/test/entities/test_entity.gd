@@ -98,6 +98,7 @@ func _pos_updated(obj, key):
 		if get_tree().is_network_server():
 			setMesh("pawn_v2");
 			rpc("setMesh", "pawn_v2");
+			merge_with.rpc("remove_entity", false);
 		merge_with = null;
 	start();
 

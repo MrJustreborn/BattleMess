@@ -7,6 +7,7 @@ func start():
 	for c in $move_preview.get_children():
 		c.queue_free();
 	$overlay/user_ctrl.visible = true;
+	OS.set_window_title("BattleMess - Team: " + str(team) + " - Pos: " + str(pos) + " - Server: " + str(get_tree().is_network_server()));
 
 #func update_pos(newpos):
 #	.update_pos(newpos)
