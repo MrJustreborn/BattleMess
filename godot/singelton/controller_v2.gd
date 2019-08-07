@@ -272,6 +272,7 @@ func _end_turn():
 					current_field[c][1].kill_node = current_field[c][0];
 				else:
 					current_field[c][1].merge_with = current_field[c][0];
+					entities[current_field[c][1]].append(current_field[c][0].name)
 				current_field[c].remove(0);
 				future_field[c].remove(0);
 			for n in current_field[c]:
