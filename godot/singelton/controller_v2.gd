@@ -278,6 +278,14 @@ func _end_turn():
 			for n in current_field[c]:
 				n.rpc("update_pos", c);
 	_pretty_print();
+	print("Recheck entities ref: ", entities.size())
+	var toRemove = []
+	for e in entities:
+		if !is_instance_valid(e):
+			toRemove.append(e)
+	for t in toRemove:
+		entities.erase(t)
+	print("Updated entities ref: ", entities.size())
 
 func _player_connected(id):
 	if get_tree().is_network_server():
