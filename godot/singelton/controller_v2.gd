@@ -241,6 +241,30 @@ func _change_teams():
 		teams['spawn[0]'] = true;
 		teams['spawn[1]'] = false;
 
+func update_merged(ref, merged_players):
+	#var from = get_tree().get_rpc_sender_id();
+	#if from == 0 && get_tree().is_network_server():
+	#	from = 1;
+	#var ref = get_ref(from)
+	print(ref, ref.merged_players, merged_players, ref.pos)
+	for m in merged_players:
+		if int(m) == 1 && get_tree().is_network_server():
+			set_player_TMP(ref.pos, merged_players)
+		else:
+			rpc_id(int(m), "set_player_TMP", ref.pos, merged_players);
+
+remote func set_player_TMP(cell, merged_players):
+	var e = current_field[cell][0]; #TODO: slave don't have this arr
+	var t = e.team;
+	print(e)
+	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "idle_frame")
+	print("set_script")
+	e.set_script(user_ctrl)
+	yield(get_tree(), "idle_frame")
+	e.init_new_player(self, cell, t, merged_players, "pawn_v2"); #TODO: set mesh!!!
+
 # TODO: fix this mess
 var remoteActive = {};
 signal all_changed;

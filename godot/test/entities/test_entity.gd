@@ -34,6 +34,8 @@ var MAT2 = SpatialMaterial.new();
 var merge_with: Node = null;
 var kill_node: Node = null;
 
+var merged_players = [];
+
 func _ready():
 	print("Ready: ",team);
 	#print("Network: ", get_tree().is_network_server());
@@ -44,6 +46,18 @@ func init(ctrl, cell, team, piece = "pawn"):
 	grid_crtl = ctrl;
 	pos = cell;
 	self.team = team;
+	add_to_group(team)
+	if is_inside_tree():
+		#print("REINIT_ENTITY!");
+		start();
+	setMesh(piece);
+
+func init_new_player(ctrl, cell, team, merged_players, piece = "pawn"):
+	print("Init_new_player -> ", merged_players)
+	grid_crtl = ctrl;
+	pos = cell;
+	self.team = team;
+	self.merged_players = merged_players;
 	add_to_group(team)
 	if is_inside_tree():
 		#print("REINIT_ENTITY!");
@@ -99,6 +113,8 @@ func _pos_updated(obj, key):
 			setMesh("pawn_v2");
 			rpc("setMesh", "pawn_v2");
 			merge_with.rpc("remove_entity", false);
+			merged_players.append(merge_with.name)
+			grid_crtl.update_merged(self, merged_players)
 		merge_with = null;
 	start();
 
