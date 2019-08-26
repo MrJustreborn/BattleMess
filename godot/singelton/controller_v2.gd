@@ -105,6 +105,7 @@ func _can_kill_future(who: Node, cell: Vector2) -> bool:
 func get_ref(id):
 	print("Get ref for: ", id)
 	for n in entities:
+		print("search: ", entities[n], " -> ",entities[n].has(id));
 		if !entities[n].empty() && entities[n].has(id):
 			print(n, " -> ", n.name);
 			return n;
@@ -249,12 +250,13 @@ func update_merged(ref, merged_players):
 	print(ref, ref.merged_players, merged_players, ref.pos)
 	for m in merged_players:
 		if int(m) == 1 && get_tree().is_network_server():
-			set_player_TMP(ref.pos, merged_players)
+			set_player_TMP(ref.pos, merged_players, current_field[ref.pos][0].get_path())
 		else:
-			rpc_id(int(m), "set_player_TMP", ref.pos, merged_players);
+			rpc_id(int(m), "set_player_TMP", ref.pos, merged_players, current_field[ref.pos][0].get_path());
 
-remote func set_player_TMP(cell, merged_players):
-	var e = current_field[cell][0]; #TODO: slave don't have this arr
+remote func set_player_TMP(cell, merged_players, path: NodePath):
+	print("Merge: ", path)
+	var e = get_node(path);#current_field[cell][0]; #TODO: slave don't have this arr
 	var t = e.team;
 	print(e)
 	yield(get_tree(), "idle_frame")
@@ -296,7 +298,7 @@ func _end_turn():
 					current_field[c][1].kill_node = current_field[c][0];
 				else:
 					current_field[c][1].merge_with = current_field[c][0];
-					entities[current_field[c][1]].append(current_field[c][0].name)
+					entities[current_field[c][1]].append(int(current_field[c][0].name))
 				current_field[c].remove(0);
 				future_field[c].remove(0);
 			for n in current_field[c]:
